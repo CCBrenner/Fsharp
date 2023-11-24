@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="Cards.fs" />
+    <Compile Include="LamdaAndPatternMatchingExamples.fs" />
+    <Compile Include="Shape.fs" />
+    <Compile Include="OptionCode.fs" />
+    <Compile Include="CitationSegment.fs" />
+    <Compile Include="Person.fs" />
+    <Compile Include="Puzzle.fs" />
+    <Compile Include="ExampleOne.fs" />
+    <Compile Include="ExampleTwo.fs" />
+    <Compile Include="DistinguishingTypes.fs" />
+    <Compile Include="StackCalc.fs" />
+    <Compile Include="TypeExamples.fs" />
+    <Compile Include="CurryingExamples.fs" />
+    <Compile Include="PartialApplicationExamples.fs" />
+    <Compile Include="Program.fs" />
+  </ItemGroup>
+
+</Project>

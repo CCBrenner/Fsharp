@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "cgKNoGjZ5bAQhw5V9GED5McW92tf7E+GievAkh/jfwO/9rTTIa1KCxTE8EVr6530yRZMmo2/rQzeqgX7LjfQIw==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\colly_cp7sy9h\\Desktop\\projects\\local_dotnet\\first_fsharp_console_project\\fsharpConsoleSln\\fsharpConsole\\fsharpConsole.fsproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\colly_cp7sy9h\\.nuget\\packages\\fsharp.core\\7.0.400\\fsharp.core.7.0.400.nupkg.sha512"
+  ],
+  "logs": []
+}
