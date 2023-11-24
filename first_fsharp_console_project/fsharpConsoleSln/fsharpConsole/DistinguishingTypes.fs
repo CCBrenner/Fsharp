@@ -1,6 +1,11 @@
 ﻿
 module StackCalculatorTwo
 
+// Arrays:
+let myArr:array<int> = Array.zeroCreate 20
+let myArr2:array<int> = Array.create 3 7
+let myArr3:array<int> = [| for i in 0 .. 9 -> i |]
+
 module SumTypesYa =
     // Discriminated union; has case identifiers (tags) that have types (not required) under a single union
     type SumTypesYa = 
