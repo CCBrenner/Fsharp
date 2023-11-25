@@ -12,7 +12,7 @@
     <Compile Include="OptionCode.fs" />
     <Compile Include="CitationSegment.fs" />
     <Compile Include="Person.fs" />
-    <Compile Include="Puzzle.fs" />
+    <Compile Include="Sudoku.fs" />
     <Compile Include="ExampleOne.fs" />
     <Compile Include="ExampleTwo.fs" />
     <Compile Include="DistinguishingTypes.fs" />

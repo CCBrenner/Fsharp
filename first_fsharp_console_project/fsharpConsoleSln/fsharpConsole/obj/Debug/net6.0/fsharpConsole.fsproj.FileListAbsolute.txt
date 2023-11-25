@@ -25,3 +25,9 @@ C:\Users\colly_cp7sy9h\Desktop\projects\local_dotnet\first_fsharp_console_projec
 C:\Users\colly_cp7sy9h\Desktop\projects\local_dotnet\first_fsharp_console_project\fsharpConsoleSln\fsharpConsole\obj\Debug\net6.0\fsharpConsole.dll
 C:\Users\colly_cp7sy9h\Desktop\projects\local_dotnet\first_fsharp_console_project\fsharpConsoleSln\fsharpConsole\obj\Debug\net6.0\fsharpConsole.pdb
 C:\Users\colly_cp7sy9h\Desktop\projects\local_dotnet\first_fsharp_console_project\fsharpConsoleSln\fsharpConsole\obj\Debug\net6.0\fsharpConsole.genruntimeconfig.cache
+C:\Users\colly_cp7sy9h\Desktop\projects\gh_clone_hosting\Fsharp\Fsharp\first_fsharp_console_project\fsharpConsoleSln\fsharpConsole\obj\Debug\net6.0\fsharpConsole.fsproj.AssemblyReference.cache
+C:\Users\colly_cp7sy9h\Desktop\projects\gh_clone_hosting\Fsharp\Fsharp\first_fsharp_console_project\fsharpConsoleSln\fsharpConsole\obj\Debug\net6.0\fsharpConsole.AssemblyInfoInputs.cache
+C:\Users\colly_cp7sy9h\Desktop\projects\gh_clone_hosting\Fsharp\Fsharp\first_fsharp_console_project\fsharpConsoleSln\fsharpConsole\obj\Debug\net6.0\fsharpConsole.AssemblyInfo.fs
+C:\Users\colly_cp7sy9h\Desktop\projects\gh_clone_hosting\Fsharp\Fsharp\first_fsharp_console_project\fsharpConsoleSln\fsharpConsole\obj\Debug\net6.0\fsharpConsole.fsproj.CoreCompileInputs.cache
+C:\Users\colly_cp7sy9h\Desktop\projects\gh_clone_hosting\Fsharp\Fsharp\first_fsharp_console_project\fsharpConsoleSln\fsharpConsole\obj\Debug\net6.0\fsharpConsole.dll
+C:\Users\colly_cp7sy9h\Desktop\projects\gh_clone_hosting\Fsharp\Fsharp\first_fsharp_console_project\fsharpConsoleSln\fsharpConsole\obj\Debug\net6.0\fsharpConsole.pdb
