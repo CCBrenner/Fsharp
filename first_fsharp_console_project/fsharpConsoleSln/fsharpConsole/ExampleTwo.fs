@@ -14,14 +14,14 @@ let runExample () =
           LName = "Trail"
           IsMale = true }
     let newFirstPerson = changeLastName firstPerson "Edwards"
-    printf "Hi, I am %s\n" newFirstPerson.FullName
+    printf "Hi, I am %s\n" (Person.FullName firstPerson)
 
     let secondPerson =
         { FName = "Lindsey"
           LName = "Trail"
           IsMale = false }
     let newSecondPerson = changeLastName secondPerson "Edwards"
-    printf "Hi, I am %s\n" newSecondPerson.FullName
+    printf "Hi, I am %s\n" (Person.FullName newSecondPerson)
 
     //let newNewSecondPerson = { secondPerson with LName = "Edwards" }
-    printf $"Hi, I am %s{secondPerson.FullName}"
+    printf $"Hi, I am %s{(Person.FullName secondPerson)}"
