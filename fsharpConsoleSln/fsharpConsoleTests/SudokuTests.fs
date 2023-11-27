@@ -1,6 +1,7 @@
 namespace fsharpConsoleTests
 
 open System
+open System.Linq
 open Microsoft.VisualStudio.TestTools.UnitTesting
 
 [<TestClass>]
@@ -71,14 +72,46 @@ type SudokuTests () =
         Assert.AreEqual(2, cellList[66].BlockColId)
         Assert.AreEqual(3, cellList[80].BlockColId)
         ()
-    (*
 
     [<TestMethod>]
+    member this.TestLoadingSeedCellValuesIsAccurate () =
+        let cellList = Puzzle.createCellList ()
+        let seedValues = 
+            [ 0; 0; 7;   4; 6; 0;   2; 0; 0;
+              0; 3; 0;   0; 0; 0;   4; 0; 0;
+              0; 9; 0;   5; 0; 0;   6; 0; 0;
+
+              2; 0; 0;   1; 0; 0;   5; 0; 0;
+              0; 0; 0;   0; 0; 0;   0; 0; 0;
+              0; 7; 0;   6; 0; 0;   0; 9; 0;
+
+              0; 0; 3;   0; 0; 1;   0; 5; 0;
+              0; 1; 0;   7; 0; 0;   0; 8; 0;
+              0; 0; 0;   0; 3; 4;   0; 0; 0; ]
+
+        let seededCellList = Puzzle.loadValuesIntoCellList cellList seedValues
+
+        let getCellVal id = (seededCellList |> List.filter (fun (x:Cell.Cell) -> x.Id=id)).FirstOrDefault().Value
+        Assert.AreEqual(7, getCellVal 3)
+        Assert.AreEqual(4, getCellVal 4)
+        Assert.AreEqual(6, getCellVal 5)
+        Assert.AreEqual(5, getCellVal 22)
+        Assert.AreEqual(8, getCellVal 71)
+        
+        Assert.AreEqual(0, getCellVal 59)
+        Assert.AreEqual(0, getCellVal 81)
+        ()
+    (*
+    
+    [<TestMethod>]
     member this.TestCreatedCellsHaveInitialValueStatusOfUnconfirmedEvenIfValueIsNotZero () =
+        let cellList = Puzzle.createCellList ()
+        
+
         ()
 
     [<TestMethod>]
-    member this.TestGetRowsReutrnsTheCorrectBlocksForAGivenRowOfCells () =
+    member this.TestGetRowsReturnsTheCorrectBlocksForAGivenRowOfCells () =
         ()
 
     [<TestMethod>]

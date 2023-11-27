@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\colly_cp7sy9h\\Desktop\\projects\\gh_clone_hosting\\Fsharp\\Fsharp\\first_fsharp_console_project\\fsharpConsoleSln\\fsharpConsole\\fsharpConsole.fsproj": {}
+    "C:\\Users\\colly_cp7sy9h\\Desktop\\projects\\gh_clone_hosting\\Fsharp\\Fsharp\\fsharpConsoleSln\\fsharpConsole\\fsharpConsole.fsproj": {}
   },
   "projects": {
-    "C:\\Users\\colly_cp7sy9h\\Desktop\\projects\\gh_clone_hosting\\Fsharp\\Fsharp\\first_fsharp_console_project\\fsharpConsoleSln\\fsharpConsole\\fsharpConsole.fsproj": {
+    "C:\\Users\\colly_cp7sy9h\\Desktop\\projects\\gh_clone_hosting\\Fsharp\\Fsharp\\fsharpConsoleSln\\fsharpConsole\\fsharpConsole.fsproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\colly_cp7sy9h\\Desktop\\projects\\gh_clone_hosting\\Fsharp\\Fsharp\\first_fsharp_console_project\\fsharpConsoleSln\\fsharpConsole\\fsharpConsole.fsproj",
+        "projectUniqueName": "C:\\Users\\colly_cp7sy9h\\Desktop\\projects\\gh_clone_hosting\\Fsharp\\Fsharp\\fsharpConsoleSln\\fsharpConsole\\fsharpConsole.fsproj",
         "projectName": "fsharpConsole",
-        "projectPath": "C:\\Users\\colly_cp7sy9h\\Desktop\\projects\\gh_clone_hosting\\Fsharp\\Fsharp\\first_fsharp_console_project\\fsharpConsoleSln\\fsharpConsole\\fsharpConsole.fsproj",
+        "projectPath": "C:\\Users\\colly_cp7sy9h\\Desktop\\projects\\gh_clone_hosting\\Fsharp\\Fsharp\\fsharpConsoleSln\\fsharpConsole\\fsharpConsole.fsproj",
         "packagesPath": "C:\\Users\\colly_cp7sy9h\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\colly_cp7sy9h\\Desktop\\projects\\gh_clone_hosting\\Fsharp\\Fsharp\\first_fsharp_console_project\\fsharpConsoleSln\\fsharpConsole\\obj\\",
+        "outputPath": "C:\\Users\\colly_cp7sy9h\\Desktop\\projects\\gh_clone_hosting\\Fsharp\\Fsharp\\fsharpConsoleSln\\fsharpConsole\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

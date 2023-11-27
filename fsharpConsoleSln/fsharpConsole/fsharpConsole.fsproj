@@ -14,6 +14,7 @@
     <Compile Include="Sudoku\PuzzleBook.fs" />
     <Compile Include="Sudoku\Puzzle.fs" />
     <Compile Include="Sudoku\Sudoku.fs" />
+    <Compile Include="TestScratch.fs" />
     <Compile Include="Cards.fs" />
     <Compile Include="LamdaAndPatternMatchingExamples.fs" />
     <Compile Include="Shape.fs" />

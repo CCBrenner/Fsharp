@@ -2425,11 +2425,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\colly_cp7sy9h\\Desktop\\projects\\gh_clone_hosting\\Fsharp\\Fsharp\\first_fsharp_console_project\\fsharpConsoleSln\\fsharpConsoleTests\\fsharpConsoleTests.fsproj",
+      "projectUniqueName": "C:\\Users\\colly_cp7sy9h\\Desktop\\projects\\gh_clone_hosting\\Fsharp\\Fsharp\\fsharpConsoleSln\\fsharpConsoleTests\\fsharpConsoleTests.fsproj",
       "projectName": "fsharpConsoleTests",
-      "projectPath": "C:\\Users\\colly_cp7sy9h\\Desktop\\projects\\gh_clone_hosting\\Fsharp\\Fsharp\\first_fsharp_console_project\\fsharpConsoleSln\\fsharpConsoleTests\\fsharpConsoleTests.fsproj",
+      "projectPath": "C:\\Users\\colly_cp7sy9h\\Desktop\\projects\\gh_clone_hosting\\Fsharp\\Fsharp\\fsharpConsoleSln\\fsharpConsoleTests\\fsharpConsoleTests.fsproj",
       "packagesPath": "C:\\Users\\colly_cp7sy9h\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\colly_cp7sy9h\\Desktop\\projects\\gh_clone_hosting\\Fsharp\\Fsharp\\first_fsharp_console_project\\fsharpConsoleSln\\fsharpConsoleTests\\obj\\",
+      "outputPath": "C:\\Users\\colly_cp7sy9h\\Desktop\\projects\\gh_clone_hosting\\Fsharp\\Fsharp\\fsharpConsoleSln\\fsharpConsoleTests\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -2452,8 +2452,8 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "C:\\Users\\colly_cp7sy9h\\Desktop\\projects\\gh_clone_hosting\\Fsharp\\Fsharp\\first_fsharp_console_project\\fsharpConsoleSln\\fsharpConsole\\fsharpConsole.fsproj": {
-              "projectPath": "C:\\Users\\colly_cp7sy9h\\Desktop\\projects\\gh_clone_hosting\\Fsharp\\Fsharp\\first_fsharp_console_project\\fsharpConsoleSln\\fsharpConsole\\fsharpConsole.fsproj"
+            "C:\\Users\\colly_cp7sy9h\\Desktop\\projects\\gh_clone_hosting\\Fsharp\\Fsharp\\fsharpConsoleSln\\fsharpConsole\\fsharpConsole.fsproj": {
+              "projectPath": "C:\\Users\\colly_cp7sy9h\\Desktop\\projects\\gh_clone_hosting\\Fsharp\\Fsharp\\fsharpConsoleSln\\fsharpConsole\\fsharpConsole.fsproj"
             }
           }
         }
