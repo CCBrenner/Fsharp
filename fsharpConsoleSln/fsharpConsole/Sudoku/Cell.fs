@@ -1,5 +1,7 @@
 ﻿module Cell
 
+open System.Linq
+
 type ValueStatus =
     | Given
     | Unconfirmed
@@ -10,36 +12,38 @@ type Cell =
       RowId: int
       ColId: int
       BlockId: int
-      BlockRowId: int
-      BlockColId: int
+      //BlockRowId: int
+      //BlockColId: int
       Value: int
       ValueStatus: ValueStatus
       Values: array<int> }
 
 let defaultCellValue = 0
 
-let getBaseId modNum operation id = (operation (id-1) modNum)+1
-let getCellLvlId = getBaseId 9
-let getBlockLvlId = getBaseId 3
-
 // constructor:
 let create id =
     let values = [| for i in 0 .. 9 -> i |]
-    let rowId = getCellLvlId (/) id  //let rowId = (id-1)/9+1
-    let colId = getCellLvlId (%) id  //let colId = (id-1)%9+1
-    let blockId = ((rowId-1)/3*3)+((colId-1)/3)+1  // "/3*3" eliminates the remainder
-    let blockRowId = getBlockLvlId (/) blockId  // (blockId-1)/3+1
-    let blockColId = getBlockLvlId (%) blockId  // (blockId-1)%3+1
+
+    let getIdTemplate modNum operation id = (operation (id-1) modNum)+1
+    let getIdNine = getIdTemplate 9
+    let getIdThreeDiv = getIdTemplate 3 (/)
+
+    let rowId = getIdNine (/) id
+    let colId = getIdNine (%) id
+    let blockColId = getIdThreeDiv colId
+    //let blockRowId = getIdThreeDiv rowId
+    let blockId = ((rowId-1)/3*3)+blockColId  // "../3*3" eliminates the remainder
+
     let cell =
         { Id=id
           RowId=rowId
           ColId=colId
           BlockId=blockId
-          BlockRowId=blockRowId
-          BlockColId=blockColId
+          //BlockRowId=blockRowId
+          //BlockColId=blockColId
           Value=defaultCellValue
           ValueStatus=Unconfirmed
-          Values=values }
+          Values=values }  // Values[0] is only a placeholder for indexing purposes.
     cell
 
 let updateValue cell newVal =
@@ -55,8 +59,33 @@ let resetValues cell =
 let EliminateCandidatesForGivenAndConfirmedCells =
     ()
     
-//let returnCellsFromColumn cellList colNum =
-//    List.filter (fun x -> x.Id % 9 = colNum) cellList
+// GET functions:
+let getCellsOfRow rowId = List.filter (fun x -> x.RowId=rowId)
+let getCellsOfColumn colId = List.filter (fun x -> x.ColId=colId)
+let getCellsOfBlock blockId = List.filter (fun x -> x.BlockId=blockId)
+//let getCellsOfBlockRow blockRowId = List.filter (fun x -> x.BlockRowId = blockRowId)
+//let getCellsOfBlockColumn blockColId = List.filter (fun x -> x.BlockColId = blockColId)
 
-//let returnCellsFromRow cellList rowNum =
-//    List.filter (fun x -> x.Id > (rowNum-1)*9 && x.Id < rowNum*9+1) cellList
+let private rowIdMatch rowId = List.filter (fun x -> x.RowId=rowId)
+let private colIdMatch colId = List.filter (fun x -> x.ColId=colId)
+let getCellViaMatrix (rowId, colId) cellList = (cellList |> rowIdMatch rowId |> colIdMatch colId).FirstOrDefault()
+
+(*  Not currently used (is complete); can be uncommented if use for BlockRow and BlockColumn become apparent.
+let private blockFuncTemplate rowOrCol blockRowId =
+    match blockRowId with
+    | 1 -> (1, 2, 3)
+    | 2 -> (4, 5, 6)
+    | 3 -> (7, 8, 9)
+    | _ -> failwith $"block{ rowOrCol }Id out of bounds."
+
+let getBlocksOfBlockRow = blockFuncTemplate "Row"
+let getBlocksOfBlockCol blockColId =
+    match blockColId with
+    | 1 -> (1, 4, 7)
+    | 2 -> (2, 5, 8)
+    | 3 -> (3, 6, 9)
+    | _ -> failwith "blockColId out of bounds."
+
+let getRowsOfBlockRow = blockFuncTemplate "Row"
+let getColsOfBlockCol = blockFuncTemplate "Col"
+*)

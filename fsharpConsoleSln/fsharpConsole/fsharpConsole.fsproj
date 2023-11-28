@@ -6,13 +6,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="Sudoku\Solver.fs" />
     <Compile Include="Sudoku\Block.fs" />
     <Compile Include="Sudoku\Column.fs" />
     <Compile Include="Sudoku\Row.fs" />
     <Compile Include="Sudoku\Cell.fs" />
     <Compile Include="Sudoku\PuzzleBook.fs" />
+    <Compile Include="Sudoku\Candidates.fs" />
     <Compile Include="Sudoku\Puzzle.fs" />
+    <Compile Include="Sudoku\Solver.fs" />
     <Compile Include="Sudoku\Sudoku.fs" />
     <Compile Include="TestScratch.fs" />
     <Compile Include="Cards.fs" />

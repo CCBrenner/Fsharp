@@ -9,24 +9,13 @@ let originalCellList = createCellList ()
 let reassignableCellList = createCellList ()
     
 let loadValuesIntoCellList cellList (seedValues:int list) =
-    cellList |> List.map (fun x -> if seedValues[x.Id-1]<>0 then { x with Value=seedValues[x.Id-1] } else x)
+    cellList
+    |> List.map (fun x -> if seedValues[x.Id-1]<>0 then { x with Value=seedValues[x.Id-1] } else x)
 
     //[ for i in 0 .. 80 do
     //    let cell = cellList[i]
     //    cell = { cell with Value=seedValues[i] }
     //    cell]
-                
-let removeCandidates =
-    // Eliminate candidates for Given and Confirmed cells
-    Cell.EliminateCandidatesForGivenAndConfirmedCells
-
-    // Eliminate by distinct in neighborhood
-    //Row.EliminateCandidatesByDistinctInRow
-    //Column.EliminateCandidatesByDistinctInColumn  // could put all of these into "Candidates.fs" file
-    //Block.EliminateCandidatesByDistinctInBlock
-
-    // Eliminate by candidate lines
-    //Block.EliminateCandidatesByCandidateLines
 
 let solve =
 

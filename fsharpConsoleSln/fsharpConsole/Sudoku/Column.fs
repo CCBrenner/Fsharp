@@ -1,3 +1,3 @@
 ﻿module Column
 
-//let EliminateCandidatesByDistinctInColumn = 
+

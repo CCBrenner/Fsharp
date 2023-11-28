@@ -52,3 +52,7 @@ let myFunc theList targetId replacementVal =
     theList |> List.map (fun x -> if x.Id=targetId then { x with Value=replacementVal } else x)
 
 let newList = myFunc singleCellInAList 1 4 // Success: Value=4
+
+
+// Test 2: Can unit be stored in a list?
+let someList = [(); (); ()]
