@@ -18,8 +18,6 @@ type Cell =
       ValueStatus: ValueStatus
       Values: array<int> }
 
-let defaultCellValue = 0
-
 // constructor:
 let create id =
     let values = [| for i in 0 .. 9 -> i |]
@@ -41,16 +39,18 @@ let create id =
           BlockId=blockId
           //BlockRowId=blockRowId
           //BlockColId=blockColId
-          Value=defaultCellValue
+          Value=ProjectVals.defaultCellValue
           ValueStatus=Unconfirmed
           Values=values }  // Values[0] is only a placeholder for indexing purposes.
     cell
+
+let createCellList () = [ for i in 1 .. 81 -> create i ]
 
 let updateValue cell newVal =
     { cell with Value=newVal }
         
 let eliminatePossibility cell valIndex =
-    cell.Values[valIndex] = defaultCellValue
+    cell.Values[valIndex] = ProjectVals.defaultCellValue
 
 let resetValues cell =
     let resetArr = [| for i in 0 .. 9 -> i |]
@@ -69,6 +69,14 @@ let getCellsOfBlock blockId = List.filter (fun x -> x.BlockId=blockId)
 let private rowIdMatch rowId = List.filter (fun x -> x.RowId=rowId)
 let private colIdMatch colId = List.filter (fun x -> x.ColId=colId)
 let getCellViaMatrix (rowId, colId) cellList = (cellList |> rowIdMatch rowId |> colIdMatch colId).FirstOrDefault()
+
+let SetValueStatusOfValueGivenToCellsWithNonDefaultValue cellList =
+    // (used only at the beginning of the solve algorithm & with tests)
+    let localFunc x =
+        if x.Value<>ProjectVals.defaultCellValue
+        then { x with ValueStatus=ValueStatus.Given }
+        else x
+    cellList |> List.map localFunc
 
 (*  Not currently used (is complete); can be uncommented if use for BlockRow and BlockColumn become apparent.
 let private blockFuncTemplate rowOrCol blockRowId =

@@ -4,7 +4,6 @@ open Cell
 
 //type Puzzle = { }
 
-let createCellList () = [ for i in 1 .. 81 -> Cell.create i ]
 let originalCellList = createCellList ()
 let reassignableCellList = createCellList ()
     

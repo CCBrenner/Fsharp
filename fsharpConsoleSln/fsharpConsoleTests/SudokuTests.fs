@@ -10,7 +10,7 @@ type SudokuTests () =
     // Configuration
     [<TestMethod>]
     member this.TestCorrectIdIsAssignedToCells () =
-        let cellList = Puzzle.createCellList ()
+        let cellList = Cell.createCellList ()
 
         Assert.AreEqual(1, cellList[0].Id)
         Assert.AreEqual(34, cellList[33].Id)
@@ -20,7 +20,7 @@ type SudokuTests () =
 
     [<TestMethod>]
     member this.TestCorrectRowIdIsAssignedToCells () =
-        let cellList = Puzzle.createCellList ()
+        let cellList = Cell.createCellList ()
 
         Assert.AreEqual(1, cellList[0].RowId)
         Assert.AreEqual(2, cellList[9].RowId)
@@ -31,7 +31,7 @@ type SudokuTests () =
 
     [<TestMethod>]
     member this.TestCorrectColumnIdIsAssignedToCells () =
-        let cellList = Puzzle.createCellList ()
+        let cellList = Cell.createCellList ()
 
         Assert.AreEqual(1, cellList[0].ColId)
         Assert.AreEqual(1, cellList[9].ColId)
@@ -41,7 +41,7 @@ type SudokuTests () =
         ()
     [<TestMethod>]
     member this.TestCorrectBlockIdIsAssignedToCells () =
-        let cellList = Puzzle.createCellList ()
+        let cellList = Cell.createCellList ()
 
         Assert.AreEqual(1, cellList[0].BlockId)
         Assert.AreEqual(1, cellList[9].BlockId)
@@ -52,7 +52,7 @@ type SudokuTests () =
 
     [<TestMethod>]
     member this.TestLoadingSeedCellValuesIsAccurate () =
-        let cellList = Puzzle.createCellList ()
+        let cellList = Cell.createCellList ()
         let seedValues = 
             [ 0; 0; 7;   4; 6; 0;   2; 0; 0;
               0; 3; 0;   0; 0; 0;   4; 0; 0;
@@ -82,7 +82,7 @@ type SudokuTests () =
     
     [<TestMethod>]
     member this.TestCreatedCellsHaveInitialValueStatusOfUnconfirmedEvenIfValueIsNotZero () =
-        let cellList = Puzzle.createCellList ()
+        let cellList = Cell.createCellList ()
 
         // Tests 1 of 2 - Without Loaded Seed Values:
         let getCellValStatus id = (cellList |> List.filter (fun x -> x.Id=id)).FirstOrDefault().ValueStatus
@@ -121,7 +121,7 @@ type SudokuTests () =
 
     [<TestMethod>]
     member this.TestGettingCellsOfARowReturnsTheCorrectCells () =
-        let cellList = Puzzle.createCellList ()
+        let cellList = Cell.createCellList ()
 
         let cellsOfRow = cellList |> Cell.getCellsOfRow 4
 
@@ -142,7 +142,7 @@ type SudokuTests () =
 
     [<TestMethod>]
     member this.TestGettingCellsOfAColumnReturnsTheCorrectCells () =
-        let cellList = Puzzle.createCellList ()
+        let cellList = Cell.createCellList ()
 
         let cellsOfCol = cellList |> Cell.getCellsOfColumn 4
 
@@ -162,7 +162,7 @@ type SudokuTests () =
         ()
     [<TestMethod>]
     member this.TestGettingCellsOfABlockReturnsTheCorrectCells () =
-        let cellList = Puzzle.createCellList ()
+        let cellList = Cell.createCellList ()
 
         let cellsOfBlock = cellList |> Cell.getCellsOfBlock 4
 
@@ -180,6 +180,39 @@ type SudokuTests () =
         Assert.AreEqual(79, cellsOfBlock[6].Id)
         Assert.AreEqual(81, cellsOfBlock[8].Id)
         ()
+
+    [<TestMethod>]
+    member this.TestSetGivenCellsBasedOnValuePresent () =
+        // Arrange
+        let seedValues = 
+            [ 0; 0; 5;   0; 4; 0;   0; 8; 0;
+              0; 0; 3;   0; 0; 2;   0; 0; 0;
+              0; 0; 0;   0; 0; 0;   0; 9; 1;
+
+              8; 0; 0;   7; 0; 0;   0; 1; 0;
+              2; 0; 0;   8; 0; 3;   0; 0; 7;
+              0; 6; 0;   0; 0; 4;   0; 0; 9;
+
+              4; 3; 0;   0; 0; 0;   0; 0; 0;
+              0; 0; 0;   9; 0; 0;   1; 0; 0;
+              0; 8; 0;   0; 5; 0;   6; 0; 0; ]
+
+        let cellList = Cell.createCellList ()
+        let cellList' = Puzzle.loadValuesIntoCellList cellList seedValues
+
+        // Act
+        let resultCellList = Cell.SetValueStatusOfValueGivenToCellsWithNonDefaultValue cellList'
+
+        // Assert
+        let getCellViaMatrix (rowId, colId) = resultCellList |> Cell.getCellViaMatrix (rowId+1, colId+1)
+
+        Assert.AreEqual(ValueStatus.Given, (getCellViaMatrix (0,2)).ValueStatus);
+        Assert.AreEqual(ValueStatus.Given, (getCellViaMatrix (1,2)).ValueStatus);
+        Assert.AreEqual(ValueStatus.Given, (getCellViaMatrix (3,0)).ValueStatus);
+        Assert.AreEqual(ValueStatus.Given, (getCellViaMatrix (4,0)).ValueStatus);
+        Assert.AreEqual(ValueStatus.Given, (getCellViaMatrix (8,6)).ValueStatus);
+
+
     
     // Candidates mgmt:
     [<TestMethod>]
@@ -197,71 +230,157 @@ type SudokuTests () =
               4; 3; 0;   0; 0; 0;   0; 0; 0;
               0; 0; 0;   9; 0; 0;   1; 0; 0;
               0; 8; 0;   0; 5; 0;   6; 0; 0; ]
-        let cellList = Puzzle.createCellList ()
+
+        let cellList = Cell.createCellList ()
         let cellList' = Puzzle.loadValuesIntoCellList cellList seedValues
+        let cellList'' = Cell.SetValueStatusOfValueGivenToCellsWithNonDefaultValue cellList'  // required
 
         // Act
-        Candidates.EliminateCandidatesByDistinctInRow cellList'
+        let resultCellList = Candidates.eliminateCandidatesByDistinctInRow cellList''
 
         // Assert
-        let getCellViaMatrix (rowId, colId) =  cellList' |> Cell.getCellViaMatrix (rowId+1, colId+1)
+        let getCellViaMatrix (rowId, colId) = resultCellList |> Cell.getCellViaMatrix (rowId+1, colId+1)
+
         // Row 0:
         // 5 is NOT a candidate
         Assert.AreEqual(0, (getCellViaMatrix (0,0)).Values[5]);
         Assert.AreEqual(0, (getCellViaMatrix (0,8)).Values[5]);
-        // 5 is a candidate for Matrix[0, 2]:
-        Assert.AreEqual(5, (getCellViaMatrix (0,2)).Values[5]);
         // 4 is NOT a candidate
         Assert.AreEqual(0, (getCellViaMatrix (0,0)).Values[4]);
         Assert.AreEqual(0, (getCellViaMatrix (0,8)).Values[4]);
-        // 4 is a candidate for Matrix[0, 4]:
-        Assert.AreEqual(4, (getCellViaMatrix (0,4)).Values[4]);
         // 3 is a candidate
         Assert.AreEqual(3, (getCellViaMatrix (0,0)).Values[3]);
         Assert.AreEqual(3, (getCellViaMatrix (0,8)).Values[3]);
-        // 3 is NOT a candidate for [0, 3] or [4, 0]:
-        Assert.AreEqual(0, (getCellViaMatrix (0,2)).Values[3]);
-        Assert.AreEqual(0, (getCellViaMatrix (0,4)).Values[3]);
         // 1 is a candidate
         Assert.AreEqual(1, (getCellViaMatrix (0,0)).Values[1]);
         Assert.AreEqual(1, (getCellViaMatrix (0,8)).Values[1]);
-        // 1 is NOT a candidate for [0, 3] or [0, 4]:
-        Assert.AreEqual(0, (getCellViaMatrix (0,2)).Values[1]);
-        Assert.AreEqual(0, (getCellViaMatrix (0,4)).Values[1]);
 
         // Row 4:
         // 2 is NOT a candidate
         Assert.AreEqual(0, (getCellViaMatrix (4,4)).Values[2]);
         Assert.AreEqual(0, (getCellViaMatrix (4,6)).Values[2]);
-        // 2 is a candidate for Matrix[4, 0]:
-        Assert.AreEqual(2, (getCellViaMatrix (4,0)).Values[2]);
         // 3 is NOT a candidate
         Assert.AreEqual(0, (getCellViaMatrix (4,4)).Values[3]);
         Assert.AreEqual(0, (getCellViaMatrix (4,6)).Values[3]);
-        // 3 is a candidate for Matrix[4, 5]:
-        Assert.AreEqual(3, (getCellViaMatrix (4,5)).Values[3]);
         // 6 is a candidate
         Assert.AreEqual(6, (getCellViaMatrix (4,4)).Values[6]);
         Assert.AreEqual(6, (getCellViaMatrix (4,6)).Values[6]);
-        // 6 is NOT a candidate for [4, 0] or [4, 5]:
-        Assert.AreEqual(0, (getCellViaMatrix (4,0)).Values[6]);
-        Assert.AreEqual(0, (getCellViaMatrix (4,5)).Values[6]);
         // 5 is a candidate
         Assert.AreEqual(5, (getCellViaMatrix (4,4)).Values[5]);
         Assert.AreEqual(5, (getCellViaMatrix (4,6)).Values[5]);
-        // 5 is NOT a candidate for [4, 8] or [4, 5]:
-        Assert.AreEqual(0, (getCellViaMatrix (4,0)).Values[5]);
-        Assert.AreEqual(0, (getCellViaMatrix (4,5)).Values[5]);
         ()
-    (*
+    
+
     [<TestMethod>]
     member this.TestEliminateCandidatesDistinctInColumn () =
+        // Arrange
+        let seedValues = 
+            [ 0; 0; 5;   0; 4; 0;   0; 8; 0;
+              0; 0; 3;   0; 0; 2;   0; 0; 0;
+              0; 0; 0;   0; 0; 0;   0; 9; 1;
+
+              8; 0; 0;   7; 0; 0;   0; 1; 0;
+              2; 0; 0;   8; 0; 3;   0; 0; 7;
+              0; 6; 0;   0; 0; 4;   0; 0; 9;
+
+              4; 3; 0;   0; 0; 0;   0; 0; 0;
+              0; 0; 0;   9; 0; 0;   1; 0; 0;
+              0; 8; 0;   0; 5; 0;   6; 0; 0; ]
+
+        let cellList = Cell.createCellList ()
+        let cellList' = Puzzle.loadValuesIntoCellList cellList seedValues
+        let cellList'' = Cell.SetValueStatusOfValueGivenToCellsWithNonDefaultValue cellList'  // required
+
+        // Act
+        let resultCellList = Candidates.eliminateCandidatesByDistinctInColumn cellList''
+
+        // Assert
+        let getCellViaMatrix (rowId, colId) = resultCellList |> Cell.getCellViaMatrix (rowId+1, colId+1)
+
+        // Column 0:
+        // 2 is NOT a candidate
+        Assert.AreEqual(0, (getCellViaMatrix (1,0)).Values[2]);
+        Assert.AreEqual(0, (getCellViaMatrix (8,0)).Values[2]);
+        // 4 is NOT a candidate
+        Assert.AreEqual(0, (getCellViaMatrix (1,0)).Values[4]);
+        Assert.AreEqual(0, (getCellViaMatrix (8,0)).Values[4]);
+        // 3 is a candidate
+        Assert.AreEqual(3, (getCellViaMatrix (1,0)).Values[3]);
+        Assert.AreEqual(3, (getCellViaMatrix (8,0)).Values[3]);
+        // 1 is a candidate
+        Assert.AreEqual(1, (getCellViaMatrix (1,0)).Values[1]);
+        Assert.AreEqual(1, (getCellViaMatrix (8,0)).Values[1]);
+
+        // Column 4:
+        // 4 is NOT a candidate
+        Assert.AreEqual(0, (getCellViaMatrix (1,4)).Values[4]);
+        Assert.AreEqual(0, (getCellViaMatrix (7,4)).Values[4]);
+        // 5 is NOT a candidate
+        Assert.AreEqual(0, (getCellViaMatrix (1,4)).Values[5]);
+        Assert.AreEqual(0, (getCellViaMatrix (7,4)).Values[5]);
+        // 6 is a candidate
+        Assert.AreEqual(6, (getCellViaMatrix (1,4)).Values[6]);
+        Assert.AreEqual(6, (getCellViaMatrix (7,4)).Values[6]);
+        // 2 is a candidate
+        Assert.AreEqual(2, (getCellViaMatrix (1,4)).Values[2]);
+        Assert.AreEqual(2, (getCellViaMatrix (7,4)).Values[2]);
         ()
 
     [<TestMethod>]
     member this.TestEliminateCandidatesDistinctInBlock () =
-        ()
+        // Arrange
+        let seedValues = 
+            [ 0; 0; 5;   0; 4; 0;   0; 8; 0;
+              0; 0; 3;   0; 0; 2;   0; 0; 0;
+              0; 0; 0;   0; 0; 0;   0; 9; 1;
 
+              8; 0; 0;   7; 0; 0;   0; 1; 0;
+              2; 0; 0;   8; 0; 3;   0; 0; 7;
+              0; 6; 0;   0; 0; 4;   0; 0; 9;
+
+              4; 3; 0;   0; 0; 0;   0; 0; 0;
+              0; 0; 0;   9; 0; 0;   1; 0; 0;
+              0; 8; 0;   0; 5; 0;   6; 0; 0; ]
+
+        let cellList = Cell.createCellList ()
+        let cellList' = Puzzle.loadValuesIntoCellList cellList seedValues
+        let cellList'' = Cell.SetValueStatusOfValueGivenToCellsWithNonDefaultValue cellList'  // required
+
+        // Act
+        let resultCellList = Candidates.eliminateCandidatesByDistinctInBlock cellList''
+
+        // Assert
+        let getCellViaMatrix (rowId, colId) = resultCellList |> Cell.getCellViaMatrix (rowId+1, colId+1)
+
+        // Block 0:
+        // 5 is NOT a candidate
+        Assert.AreEqual(0, (getCellViaMatrix (0,0)).Values[5]);
+        Assert.AreEqual(0, (getCellViaMatrix (2,2)).Values[5]);
+        // 3 is NOT a candidate
+        Assert.AreEqual(0, (getCellViaMatrix (0,0)).Values[3]);
+        Assert.AreEqual(0, (getCellViaMatrix (2,2)).Values[3]);
+        // 7 is a candidate
+        Assert.AreEqual(7, (getCellViaMatrix (0,0)).Values[7]);
+        Assert.AreEqual(7, (getCellViaMatrix (2,2)).Values[7]);
+        // 1 is a candidate
+        Assert.AreEqual(1, (getCellViaMatrix (0,0)).Values[1]);
+        Assert.AreEqual(1, (getCellViaMatrix (2,2)).Values[1]);
+
+        // Block 4:
+        // 8 is NOT a candidate
+        Assert.AreEqual(0, (getCellViaMatrix (3,5)).Values[8]);
+        Assert.AreEqual(0, (getCellViaMatrix (5,3)).Values[8]);
+        // 3 is NOT a candidate
+        Assert.AreEqual(0, (getCellViaMatrix (3,5)).Values[3]);
+        Assert.AreEqual(0, (getCellViaMatrix (5,3)).Values[3]);
+        // 6 is a candidate
+        Assert.AreEqual(6, (getCellViaMatrix (3,5)).Values[6]);
+        Assert.AreEqual(6, (getCellViaMatrix (5,3)).Values[6]);
+        // 5 is a candidate
+        Assert.AreEqual(5, (getCellViaMatrix (3,5)).Values[5]);
+        Assert.AreEqual(5, (getCellViaMatrix (5,3)).Values[5]);
+        ()
+    (*
     [<TestMethod>]
     member this.TestEliminateCellsViaCandidateLinesCheck () =
         ()
@@ -290,7 +409,7 @@ type SudokuTests () =
     // These first four tests are complete.
     [<TestMethod>]
     member this.TestCorrectBlockRowIdIsAssignedToCells () =
-        let cellList = Puzzle.createCellList ()
+        let cellList = Cell.createCellList ()
 
         Assert.AreEqual(1, cellList[0].BlockRowId)
         Assert.AreEqual(1, cellList[9].BlockRowId)
@@ -302,7 +421,7 @@ type SudokuTests () =
 
     [<TestMethod>]
     member this.TestCorrectBlockColumnIdIsAssignedToCells () =
-        let cellList = Puzzle.createCellList ()
+        let cellList = Cell.createCellList ()
 
         Assert.AreEqual(1, cellList[0].BlockColId)
         Assert.AreEqual(1, cellList[9].BlockColId)
@@ -313,7 +432,7 @@ type SudokuTests () =
         ()
     [<TestMethod>]
     member this.TestGettingCellsOfABlockRowReturnsTheCorrectCells () =
-        let cellList = Puzzle.createCellList ()
+        let cellList = Cell.createCellList ()
 
         let cellsOfBlockRow = cellList |> Cell.getCellsOfBlockRow 1
 
@@ -334,7 +453,7 @@ type SudokuTests () =
 
     [<TestMethod>]
     member this.TestGettingCellsOfABlockColumnReturnsTheCorrectCells () =
-        let cellList = Puzzle.createCellList ()
+        let cellList = Cell.createCellList ()
 
         let cellsOfBlockCol = cellList |> Cell.getCellsOfBlockColumn 1
 

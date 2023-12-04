@@ -65,7 +65,8 @@ let myList = [4;5;6]
 
 // You can think of higher-order functions like having the body of the loop outside and then bringing it inside the loop when called.
 
-// Seq.iter applies a function to each element in the sequence
+// List.iter applies a function to each element in the sequence.
+// (List.iter returns () while List.map returns a list with the same type as the input list.)
 // This:
 for item in myList do
     printfn "%i" item
@@ -84,10 +85,10 @@ let rec iter items =
 iter myList
 
 // and also this:
-let myFunc = printfn "%i"
-myList |> List.iter myFunc
+let someFunc = printfn "%i"
+myList |> List.iter someFunc
 
-// Seq.reduce - can be applied to monoids only (Closure, Associative, Identity)
+// List.reduce - can be applied to monoids only (Closure, Associative, Identity)
 // Add all elements of a sequence together:
 let capturedResultOne = myList |> List.reduce (+)
 
@@ -98,15 +99,15 @@ let capturedResultTwo = myList |> List.reduce (*)
 let myStringList = ["one"; "two"; "three"]
 let capturedResultFour = myStringList |> List.reduce (+)
 
-// Seq.filter - is functionally the same as System.Linq.Select()
+// List.filter - is functionally the same as System.Linq.Select()
 // Get all even ints in myList:
 let capturedResultThree = myList |> List.filter (fun x -> x%2=0)
 
 // or Get all odd ints in myList:
 let getOdd num = num%2=1
-let capturedResultThree = myList |> List.filter getOdd
+let capturedResultThreePointFive = myList |> List.filter getOdd
 
-// Seq.fold - takes a function value and two simple value as arguments; performs a recursive/iterative action with a starting value
+// List.fold - takes a function value and two simple value as arguments; performs a recursive/iterative action with a starting value
 // "Fold" like paper: You start with a section, then you fold the section, then you fold 
 // the same length of section again, and again, again until there is no more paper left - paper = sequence, section = value
 
@@ -116,8 +117,8 @@ let foldedResultOne = myList |> List.fold foldFunc 0  // '0' is the state, used 
 
 let foldedResultTwo = myList |> List.fold foldFunc 10  // '10' is the state, used as the base/starting point; = 25
 
-// Seq.collect - performs a function on each element and then combines multiple generated sequences into one sequence
-// Note that the [for i in 1..n -> __] portion is expected when using Seq.collect
+// List.collect - performs a function on each element and then combines multiple generated sequences into one sequence
+// Note that the [for i in 1..n -> __] portion is expected when using List.collect
 let list1 = [10; 20; 30]
 let collectList = List.collect (fun x -> [for i in 1..3 -> x * i]) list1
 
@@ -133,7 +134,7 @@ let zFunc = fun x -> x  // id is the same as this
 let aaFunc x = x  // and this
 
 // Example from Seq.collect (to essentially SKIP the function step and utilize the list combining part of Seq.collect):
-let x = [[10; 20; 30]; [20; 40; 60]; [30; 60; 90]]
+let listInList = [[10; 20; 30]; [20; 40; 60]; [30; 60; 90]]
 // All the same function value:
 let capturedResultSix = List.collect id x
 let capturedResultSeven = List.collect yFunc x
@@ -164,3 +165,70 @@ let capturedResultTwelve = List.reduce thirdFunc shortIntList
 // Test 6: Mapping non-monoids to being monoids, then reducing them (otherwiseknown as "map/reduce")
 // to be completed (*concept introduced in Scott Wlaschin's talk on Functional Design Patterns)
 // uses Custom (-> map) CustomerStat (-> reduce) CustomerTotals as example (without actual code)
+
+
+// Test 7: "Flattening" a sequence
+// Repeats '1 2 3 4 5' ten times
+let getSequence () = 
+    [ for _ in 1..10 do yield [1; 2; 3; 4; 5] ]
+let capturedResultThirteen = getSequence ()
+capturedResultThirteen |> Seq.iter (printf "%A")
+
+
+// Test 8: List.distinct
+let someKindOfList = [1;6;3;3;5;0;2;5;7;4;9]
+let capturedResultFourteen = someKindOfList |> List.distinct
+
+
+// Test 9: Using List.map to get a list of values from label values of records
+type someKindOfRecord = { LabelOne:string; LabelTwo:int }
+let recordOne = { LabelOne="yoyo"; LabelTwo=5 }
+let recordTwo = { LabelOne="yoyo"; LabelTwo=8 }
+let recordThree = { LabelOne="yoyo"; LabelTwo=4 }
+let listOfRecords = [ recordOne; recordTwo; recordThree ]
+let capturedResultFifteen = listOfRecords |> List.map (fun x -> x.LabelTwo)
+
+
+// Test 10: List.contains
+let someListBoi = [1;5;7;9]
+let capturedResultSixteen = someListBoi |> List.contains 6
+
+
+// Test 11: List.map2 usage
+type someKindOfRecordTwo = { LabelOne:string; LabelTwo:int }
+let recordOneA = { LabelOne="yo"; LabelTwo=5 }
+let recordTwoA = { LabelOne="yoyo"; LabelTwo=8 }
+let recordThreeA = { LabelOne="yoyo"; LabelTwo=4 }
+let listOfRecordsA = [ recordOneA; recordTwoA ]
+let listOfRecordsTwoA = [ recordThreeA ]
+
+let capturedResultSeventeen = List.map2 (fun x y -> if x.LabelOne = y.LabelOne then y else x) listOfRecordsA listOfRecordsTwoA
+// not working as expected - returns a 2 parameter function
+// I don't believe this implementation would work anyways because it is operates in a pairwise iterative manner and not an overview manner
+
+
+//Test 12: Misc higher-order function sandbox
+
+// Anything that can be done to one element in a list can be done to all elements in a list using a function.
+// What function when applied to all elements will return the exact same input if the value of the Cell is 
+// 0 and will return a new cell with only the removed candidates of a list
+// Map twice, the first for all the cells, the second for all the candidates.
+// The tricky part is composing the new object in steps. Could use second factory method for Cell.
+// I could build it such that the factory function 'create' that takes more arguments could be partially applied to give the 
+// more standard 'create' factory function.
+
+
+// List.map takes only one function and one list. It does not take in two inputs.
+// What can I use instead? I was wanting to combine list.map functions back to back. How?
+// Can I partially apply the function for each candidate somehow, so that the candidate is
+// in the PA func and it also has 1 param? This is aquestion of requirements.
+
+// List.map requires 1 function & 1 list.
+// Funcs can have more than one param and be PA'd to have only one param.
+// If I partially apply a func, then pass it to a List.map PA'd, then pass it to - no, the List.map
+// couldn't operate on anything then.
+// I will have to use something else in addition to List.map.
+
+// If List.map is a replacement for a loop, and if I need two x List.map back-to-back, then what I need 
+// is a double-nested loop. This can be done the "functional way" using recursion, but for practical readability
+// purposes it is better to use the normal double-nested loop. This is what I will use.
