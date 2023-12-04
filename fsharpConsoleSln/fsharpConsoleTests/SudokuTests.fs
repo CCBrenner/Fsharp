@@ -380,6 +380,50 @@ type SudokuTests () =
         Assert.AreEqual(5, (getCellViaMatrix (3,5)).Values[5]);
         Assert.AreEqual(5, (getCellViaMatrix (5,3)).Values[5]);
         ()
+
+    [<TestMethod>]
+    member this.TestEliminateCandidatesForGivenAndConfirmedCells () =
+        // Arrange
+        let seedValues = 
+            [ 0; 0; 5;   0; 4; 0;   0; 8; 0;
+              0; 0; 3;   0; 0; 2;   0; 0; 0;
+              0; 0; 0;   0; 0; 0;   0; 9; 1;
+
+              8; 0; 0;   7; 0; 0;   0; 1; 0;
+              2; 0; 0;   8; 0; 3;   0; 0; 7;
+              0; 6; 0;   0; 0; 4;   0; 0; 9;
+
+              4; 3; 0;   0; 0; 0;   0; 0; 0;
+              0; 0; 0;   9; 0; 0;   1; 0; 0;
+              0; 8; 0;   0; 5; 0;   6; 0; 0; ]
+
+        let cellList = Cell.createCellList ()
+        let cellList' = Puzzle.loadValuesIntoCellList cellList seedValues
+        let cellList'' = Cell.SetValueStatusOfValueGivenToCellsWithNonDefaultValue cellList'  // required
+        let cellList''' = cellList'' |> List.map (fun x ->
+            if x.Id=1 then { x with Value=1; ValueStatus=ValueStatus.Confirmed } else x)
+
+        // Act
+        let resultsCellList = cellList''' |> Candidates.eliminateCandidatesForGivenAndConfirmedCells
+
+        // Assert
+        let getCellViaMatrix (rowId, colId) = resultsCellList |> Cell.getCellViaMatrix (rowId+1, colId+1)
+
+        // cell.Value=5:  (given)
+        Assert.AreEqual (0, (getCellViaMatrix (0,2)).Values[5])
+        Assert.AreEqual (0, (getCellViaMatrix (0,2)).Values[3])
+        Assert.AreEqual (0, (getCellViaMatrix (0,2)).Values[8])
+
+        // cell.Value=9:  (confirmed)
+        Assert.AreEqual (0, (getCellViaMatrix (0,0)).Values[9])
+        Assert.AreEqual (0, (getCellViaMatrix (0,0)).Values[5])
+        Assert.AreEqual (0, (getCellViaMatrix (0,0)).Values[3])
+
+        // cell.Value=0:  (control)
+        Assert.AreEqual (5, (getCellViaMatrix (2,0)).Values[5])
+        Assert.AreEqual (3, (getCellViaMatrix (2,0)).Values[3])
+        Assert.AreEqual (8, (getCellViaMatrix (2,0)).Values[8])
+        ()
     (*
     [<TestMethod>]
     member this.TestEliminateCellsViaCandidateLinesCheck () =

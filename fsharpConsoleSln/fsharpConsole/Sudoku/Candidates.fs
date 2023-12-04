@@ -37,14 +37,21 @@ let eliminateCandidatesByDistinctInColumn =
 let eliminateCandidatesByDistinctInBlock =
     eliminateCandidatesByDistinctInGrouping Cell.getCellsOfBlock
 
+let eliminateCandidatesForGivenAndConfirmedCells cellList =
+    let clearGivenAndConfirmed cell =
+        if cell.ValueStatus<>ValueStatus.Unconfirmed
+        then { cell with Values=Array.create 10 0 }
+        else cell
+    cellList |> List.map clearGivenAndConfirmed
+
 //let eliminateCandidatesByCandidateLines
                 
 let removeCandidates cellList =
     cellList
+    |> eliminateCandidatesForGivenAndConfirmedCells
     |> eliminateCandidatesByDistinctInRow
     |> eliminateCandidatesByDistinctInColumn
     |> eliminateCandidatesByDistinctInBlock
-    //|> eliminateCandidatesForGivenAndConfirmedCells  // move to top position once written
     //|> eliminateCandidatesByCandidateLines  // stop after completing this one
     //|> eliminateCandidatesByDoublePairs
     //|> eliminateCandidatesByMultipleLines
