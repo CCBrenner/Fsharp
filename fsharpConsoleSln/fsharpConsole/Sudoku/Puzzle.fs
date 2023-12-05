@@ -7,7 +7,7 @@ open Cell
 let originalCellList = createCellList ()
 let reassignableCellList = createCellList ()
     
-let loadValuesIntoCellList cellList (seedValues:int list) =
+let loadValuesIntoCellList (seedValues:int list) cellList =
     cellList
     |> List.map (fun x -> if seedValues[x.Id-1]<>0 then { x with Value=seedValues[x.Id-1] } else x)
 
