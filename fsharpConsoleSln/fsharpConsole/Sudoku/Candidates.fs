@@ -44,15 +44,14 @@ let eliminateCandidatesForGivenAndConfirmedCells cellList =
         else cell
     cellList |> List.map clearGivenAndConfirmed
 
-//let eliminateCandidatesByCandidateLines
-                
 let removeCandidates cellList =
     cellList
     |> eliminateCandidatesForGivenAndConfirmedCells
     |> eliminateCandidatesByDistinctInRow
     |> eliminateCandidatesByDistinctInColumn
     |> eliminateCandidatesByDistinctInBlock
-    //|> eliminateCandidatesByCandidateLines  // stop after completing this one
+    // other methods of eliminate candidates:
+    //|> eliminateCandidatesByCandidateLines
     //|> eliminateCandidatesByDoublePairs
     //|> eliminateCandidatesByMultipleLines
     //|> eliminateCandidatesByNakedPairsAndTriplesAndQuadruples
