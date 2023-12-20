@@ -5,9 +5,18 @@ type Stack = StackContents of float list
 
 let newStack = StackContents [ 1.0; 2.0; 3.0 ]
 
-// Defning push:
+// Defining push:
 let push x (StackContents content) =
     StackContents (x::content)  // Note: pushes to the front of the list (it's just simpler in F#)
+
+// Defining pop:
+let pop (StackContents content) =
+    match content with
+    | first::rest ->
+        let newContent = StackContents rest
+        (first, newContent)  // returns a tuple of head and tail
+    | [] ->
+        failwith "Stack underflow"  // this is a generic exception ("failwith")
 
 // Numeric commands of stack calculator:
 let EMPTY = StackContents []
@@ -27,15 +36,6 @@ let stackWith3a  = stackWith2a |> THREE
 
 let result123 = EMPTY |> ONE |> TWO |> THREE
 let result321 = EMPTY |> THREE |> TWO |> ONE
-
-// Defining pop:
-let pop (StackContents content) =
-    match content with
-    | first::rest ->
-        let newContent = StackContents rest
-        (first, newContent)  // returns a tuple of head and tail
-    | [] ->
-        failwith "Stack underflow"  // this is a generic exception ("failwith")
 
 // Testing pop:
 let initialList = EMPTY |> ONE |> TWO

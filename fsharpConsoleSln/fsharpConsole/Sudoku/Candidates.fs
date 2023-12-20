@@ -24,7 +24,7 @@ let private eliminateCellsPerGrouping cellsOfGrouping =
     |> getCandidatesToEliminate
     |> eliminateCandidatesFromCells cellsOfGrouping
 
-let eliminateCandidatesByDistinctInGrouping getCellsOfGrouping (cellList:Cell list) = 
+let private eliminateCandidatesByDistinctInGrouping getCellsOfGrouping (cellList:Cell.T list) = 
     let listOfCellsByRow = [ for i in 1 .. 9 -> cellList |> getCellsOfGrouping i ]
     listOfCellsByRow |> List.collect eliminateCellsPerGrouping
 
@@ -58,3 +58,12 @@ let removeCandidates cellList =
     //|> eliminateCandidatesByHiddenPairsAndTriplesAndQuadruples
     //|> eliminateCandidatesByXwings
     //|> eliminateCandidatesBySwordfish
+
+let rehydrateCandidates cell = { cell with Values=[|0..9|] }
+
+let rehydrateCandidatesOfUnconfirmedCells cellList =
+    cellList
+    |> List.map (fun x ->
+        match x.ValueStatus with
+        | ValueStatus.Unconfirmed -> rehydrateCandidates x
+        | _ -> x )

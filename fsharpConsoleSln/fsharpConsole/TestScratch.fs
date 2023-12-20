@@ -1,6 +1,5 @@
 ﻿module TestScratch
 
-
 // Test 1: How to update the label of a record.
 
 type ValueStatus =
@@ -9,15 +8,15 @@ type ValueStatus =
     | Confirmed
 
 type Cell = 
-    { Id: int
-      RowId: int
-      ColId: int
-      BlockId: int
-      BlockRowId: int
-      BlockColId: int
-      Value: int
-      ValueStatus: ValueStatus
-      Values: array<int> }
+    {   Id: int
+        RowId: int
+        ColId: int
+        BlockId: int
+        BlockRowId: int
+        BlockColId: int
+        Value: int
+        ValueStatus: ValueStatus
+        Values: array<int>   }
 
 let defaultCellValue = 0
 
@@ -33,17 +32,15 @@ let create id =
     let blockId = ((rowId-1)/3*3)+((colId-1)/3)+1  // "/3*3" eliminates the remainder
     let blockRowId = getBlockLvlId (/) blockId  // (blockId-1)/3+1
     let blockColId = getBlockLvlId (%) blockId  // (blockId-1)%3+1
-    let cell =
-        { Id=id
-          RowId=rowId
-          ColId=colId
-          BlockId=blockId
-          BlockRowId=blockRowId
-          BlockColId=blockColId
-          Value=defaultCellValue
-          ValueStatus=Unconfirmed
-          Values=values }
-    cell
+    {   Id=id
+        RowId=rowId
+        ColId=colId
+        BlockId=blockId
+        BlockRowId=blockRowId
+        BlockColId=blockColId
+        Value=defaultCellValue
+        ValueStatus=ValueStatus.Unconfirmed
+        Values=values   }
 
 let singleCellInAList = [ create 1 ]
 
@@ -129,7 +126,7 @@ let capturedResultFive = List.collect id x  // combines lists without changing a
 // Test 4: The Identity Function: id
 // id returns the value as the result (the domain as the range) without performing any
 // transformation on it (or you could say the identity transformation was performed on the input)
-let yFunc = id  // view the type signature of id aliased as y
+let yFunc = id  // view the type signature of id aliased as yFunc
 let zFunc = fun x -> x  // id is the same as this
 let aaFunc x = x  // and this
 
@@ -188,47 +185,178 @@ let recordThree = { LabelOne="yoyo"; LabelTwo=4 }
 let listOfRecords = [ recordOne; recordTwo; recordThree ]
 let capturedResultFifteen = listOfRecords |> List.map (fun x -> x.LabelTwo)
 
-
 // Test 10: List.contains
 let someListBoi = [1;5;7;9]
 let capturedResultSixteen = someListBoi |> List.contains 6
-
 
 // Test 11: List.map2 usage
 type someKindOfRecordTwo = { LabelOne:string; LabelTwo:int }
 let recordOneA = { LabelOne="yo"; LabelTwo=5 }
 let recordTwoA = { LabelOne="yoyo"; LabelTwo=8 }
-let recordThreeA = { LabelOne="yoyo"; LabelTwo=4 }
+let recordThreeA = { LabelOne="yoyoyo"; LabelTwo=4 }
+let recordFourA = { LabelOne="yoyo"; LabelTwo=9 }
 let listOfRecordsA = [ recordOneA; recordTwoA ]
-let listOfRecordsTwoA = [ recordThreeA ]
+let listOfRecordsTwoA = [ recordThreeA; recordFourA ]
 
 let capturedResultSeventeen = List.map2 (fun x y -> if x.LabelOne = y.LabelOne then y else x) listOfRecordsA listOfRecordsTwoA
-// not working as expected - returns a 2 parameter function
-// I don't believe this implementation would work anyways because it is operates in a pairwise iterative manner and not an overview manner
+// operates in a pairwise iterative manner (meaning list length equality is a requirement)
+
+// Test 13: Higher-order functions as replacement expressions for loops: 
+// bad
+let printRandomNumbersUntilMatched matchValue maxValue =
+    let mutable continueLooping = true  // another mutable value
+    let randomNumberGenerator = new System.Random()
+    while continueLooping do
+        // Generate a random number between 1 and maxValue.
+        let rand = randomNumberGenerator.Next(maxValue)
+        printf "%d " rand
+        if rand = matchValue then
+            printfn "\nFound a %d!" matchValue
+            continueLooping <- false
+
+// much better
+let printRandomNumbersUntilMatched0 matchValue maxValue =
+    let randomNumberGenerator = new System.Random()
+    let sequenceGenerator _ = randomNumberGenerator.Next(maxValue)
+    let isNotMatch = (<>) matchValue
+
+    //create and process the sequence of rands
+    Seq.initInfinite sequenceGenerator
+    |> Seq.takeWhile isNotMatch
+    |> Seq.iter (printf "%d ")
+
+    // done
+    printfn "\nFound a %d!" matchValue
+
+//test
+printRandomNumbersUntilMatched0 10 50
+
+// Test 14
+
+let push tail head = head::tail
+
+let pop content =
+    match content with
+    | head::tail -> [[head]; tail]
+    | [] -> failwith "Stack underflow"
+
+let pop2 (content:int list array) index =
+    match content[index] with
+    | head::tail -> [|[head]; tail|]
+    | [] -> failwith "Stack underflow"
+
+//
+let push2 (content:int list array) index =
+    match index with 
+    | 0 -> content[1][0]::content[0]
+    | 2 -> content[1][0]::content[2]
+    | _ -> failwith "Index not accepted"
+//
+
+//let mutable previousCells :int list = []
+let mutable remainingCells = [1;2;3;4;5]
+let mutable currentCell = 0
+
+let mutable somet = [|[]; [0]; [1;2]|]
+let foo = pop2 somet 2
+somet[1] <- foo[0]
+somet[2] <- foo[1]
+
+let foo2 = pop remainingCells
+currentCell <- foo2[0][0]
+remainingCells <- foo2[1]
+
+printfn "%A" currentCell
+printfn "%A" remainingCells
+
+// data and behavior are separate
+let soma = [[]; [0]; [1;2]]
 
 
-//Test 12: Misc higher-order function sandbox
+// Test 15
+// return word count and letter count in a tuple
+let wordAndLetterCount (s:string) =
+   let words = s.Split [|' '|]
+   printfn "%A" words
+   let letterCount = words |> Array.sumBy (fun word -> word.Length )
+   (words.Length, letterCount)
 
-// Anything that can be done to one element in a list can be done to all elements in a list using a function.
-// What function when applied to all elements will return the exact same input if the value of the Cell is 
-// 0 and will return a new cell with only the removed candidates of a list
-// Map twice, the first for all the cells, the second for all the candidates.
-// The tricky part is composing the new object in steps. Could use second factory method for Cell.
-// I could build it such that the factory function 'create' that takes more arguments could be partially applied to give the 
-// more standard 'create' factory function.
+//test
+let catcher = wordAndLetterCount "to be or not to be"
 
 
-// List.map takes only one function and one list. It does not take in two inputs.
-// What can I use instead? I was wanting to combine list.map functions back to back. How?
-// Can I partially apply the function for each candidate somehow, so that the candidate is
-// in the PA func and it also has 1 param? This is aquestion of requirements.
+// Test 16: Shows that tuples can be deconstructed in the parameter
+let addToTuple amt (x,y,z) = (x+amt,y+amt,z+amt)
+let returnedVal = addToTuple 7 (1,2,3)
 
-// List.map requires 1 function & 1 list.
-// Funcs can have more than one param and be PA'd to have only one param.
-// If I partially apply a func, then pass it to a List.map PA'd, then pass it to - no, the List.map
-// couldn't operate on anything then.
-// I will have to use something else in addition to List.map.
+printf "%s" ((1,2,3).ToString())
 
-// If List.map is a replacement for a loop, and if I need two x List.map back-to-back, then what I need 
-// is a double-nested loop. This can be done the "functional way" using recursion, but for practical readability
-// purposes it is better to use the normal double-nested loop. This is what I will use.
+
+//Test 17: Constrution and Deconstruction of single case union types
+type EmailAddress = EmailAddress of string
+
+// using the constructor as a function
+let someEmailAddr = "a" |> EmailAddress
+let someEmailAddrs = ["a"; "b"; "c"] |> List.map EmailAddress
+
+// inline deconstruction
+let a' = "a" |> EmailAddress
+let (EmailAddress a'') = a'
+
+let addresses =
+    ["a"; "b"; "c"]
+    |> List.map EmailAddress
+
+let addresses' =
+    addresses
+    |> List.map (fun (EmailAddress e) -> e)
+
+
+// Test 18: Handling nested collections.
+let getAllCarrierCodesResults () = [[234; 234]; [347]; [128; 903]]
+
+let mutable allCarrierCodes :string list = [] 
+for result in getAllCarrierCodesResults () do
+    for carrierCode in result do
+        allCarrierCodes <- (carrierCode |> string)::allCarrierCodes
+
+// These four provide the same range for the same domain:
+// (comparing 2 and 4 is quite interesting; not as ovious by looking at 1 and 3)
+let allCodes1 = List.collect (List.map string) (getAllCarrierCodesResults ())  // OOP-style w/collect
+let allCodes3 = List.map string (List.concat (getAllCarrierCodesResults ()))  // OOP-style w/concat
+let allCodes2 = getAllCarrierCodesResults () |> List.collect (List.map string)  // FP-style w/collect
+let allCodes4 = getAllCarrierCodesResults () |> List.concat |> List.map string  // FP-style w/concat
+
+// Change type of data in a sequence/list:
+let myListOne = [ 1; 2; 3; 4; 5 ]  // int list
+let myNewListOne = myListOne |> List.map string  // string list
+let myNewestListOne = myNewListOne |> List.map int  // int list
+
+// Change type of collection surronding data:
+let myListTwo = [ 1; 2; 3; 4; 5 ]  // int list
+let myNewSeqTwo = myListTwo |> List.toSeq  // int seq
+
+// "Seq.collect id" has the same domain and range (I/O) as "Seq.concat":
+let dummyData = [[234; 234]; [347]; [128; 903]]
+let allCodes0a = dummyData |> List.collect id  // this...
+let allCodes1a = dummyData |> List.concat // ...& have the same I/O
+
+// Seq.collect has the same domain and range (I/O) as Seq.map and Seq.concat combined:
+let allCodes0 = dummyData |> List.collect id  // this...
+let allCodes2a = dummyData |> List.map id |> List.concat // ...& have the same I/O
+
+
+// Test 19: 
+let test256757 = [[1;2;3;4;5]; [6]; [7;8;9;10]]
+
+let someTestFunction1 cellList (cMId:int list list) =
+    let currentCell = (cellList |> List.filter (fun x -> x = cMId[1][0]))[0]
+    let prev = cellList |> List.filter (fun x -> x < cMId[1][0])
+    let remaining = cellList |> List.filter (fun x -> x > cMId[1][0])
+    [prev; [currentCell]; remaining]
+
+let arg1 = [1;2;3;4;5;6;7;8;9;10]
+let arg2 = [[23;42;13;14;50]; [6]; [237;84;49;140]]
+let arg3 = [23;42;13;14;50;6;237;84;49;140]
+let resultted = someTestFunction1 arg1 arg2
+let resultted' = someTestFunction1 arg3 arg2

@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="ScratchTests.fs" />
     <Compile Include="SudokuTests.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>

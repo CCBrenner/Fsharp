@@ -235,7 +235,7 @@ type SudokuTests () =
             Cell.createCellList ()
             |> Puzzle.loadValuesIntoCellList seedValues
         // Act
-            |> Cell.SetValueStatusOfValueGivenToCellsWithNonDefaultValue
+            |> Cell.setValueStatusOfValueGivenToCellsWithNonDefaultValue
 
         // Assert
         let getCellViaMatrix (rowId, colId) = cellList |> Cell.getCellViaMatrix (rowId+1, colId+1)
@@ -268,7 +268,7 @@ type SudokuTests () =
         let cellList =
             Cell.createCellList ()
             |> Puzzle.loadValuesIntoCellList seedValues
-            |> Cell.SetValueStatusOfValueGivenToCellsWithNonDefaultValue  // required
+            |> Cell.setValueStatusOfValueGivenToCellsWithNonDefaultValue  // required
         // Act
             |> Candidates.eliminateCandidatesByDistinctInRow
 
@@ -278,7 +278,7 @@ type SudokuTests () =
         // Row 0:
         // 5 is NOT a candidate
         Assert.AreEqual(0, (getCellViaMatrix (0,0)).Values[5]);
-        Assert.AreEqual(0, (getCellViaMatrix (0,8)).Values[5]);
+        Assert.AreEqual(0, (getCellViaMatrix (0,8)).Values[5])
         // 4 is NOT a candidate
         Assert.AreEqual(0, (getCellViaMatrix (0,0)).Values[4]);
         Assert.AreEqual(0, (getCellViaMatrix (0,8)).Values[4]);
@@ -323,7 +323,7 @@ type SudokuTests () =
         let cellList =
             Cell.createCellList ()
             |> Puzzle.loadValuesIntoCellList seedValues
-            |> Cell.SetValueStatusOfValueGivenToCellsWithNonDefaultValue  // required
+            |> Cell.setValueStatusOfValueGivenToCellsWithNonDefaultValue  // required
         // Act
             |> Candidates.eliminateCandidatesByDistinctInColumn
 
@@ -378,7 +378,7 @@ type SudokuTests () =
         let cellList =
             Cell.createCellList ()
             |> Puzzle.loadValuesIntoCellList seedValues
-            |> Cell.SetValueStatusOfValueGivenToCellsWithNonDefaultValue  // required
+            |> Cell.setValueStatusOfValueGivenToCellsWithNonDefaultValue  // required
         // Act
             |> Candidates.eliminateCandidatesByDistinctInBlock
 
@@ -433,7 +433,7 @@ type SudokuTests () =
         let cellList =
             Cell.createCellList ()
             |> Puzzle.loadValuesIntoCellList seedValues
-            |> Cell.SetValueStatusOfValueGivenToCellsWithNonDefaultValue  // required
+            |> Cell.setValueStatusOfValueGivenToCellsWithNonDefaultValue  // required
             |> List.map (fun x -> if x.Id=1 then { x with Value=1; ValueStatus=ValueStatus.Confirmed } else x)
         // Act
             |> Candidates.eliminateCandidatesForGivenAndConfirmedCells
@@ -475,7 +475,7 @@ type SudokuTests () =
         let cellList =
             Cell.createCellList ()
             |> Puzzle.loadValuesIntoCellList seedValues
-            |> Cell.SetValueStatusOfValueGivenToCellsWithNonDefaultValue  // required
+            |> Cell.setValueStatusOfValueGivenToCellsWithNonDefaultValue  // required
         // Act
             |> Candidates.eliminateCandidatesByDistinctInRow
             |> Candidates.eliminateCandidatesByDistinctInColumn
@@ -496,6 +496,23 @@ type SudokuTests () =
         // 1 is a candidate
         Assert.AreEqual(1, (getCellViaMatrix cellCoords).Values[1]);
         ()
+
+    [<TestMethod>]
+    member this.TestCreateCellManagerFromCellListAndOlderPastCellManager () =
+        // Arrange
+        let cellList0 = Cell.createCellList ()
+        let cM0 = cellList0 |> CellManager.createFromCellList
+        let cM0' = cM0 |> CellManager.goToNextCell |> CellManager.goToNextCell
+
+        // Act
+        let testResult = cM0' |> CellManager.createCellManagerFromCellListAndOlderCellManager cellList0
+
+        // Assert
+        let prev = [cellList0[0]; cellList0[1]]
+        let curr = cellList0[2]
+        Assert.AreEqual(prev, testResult.Previous)        
+        Assert.AreEqual(curr, testResult.Current)        
+        Assert.AreEqual(78, (List.length testResult.Remaining))
     (*
     [<TestMethod>]
     member this.TestGetNextCandidateReturnsNextCandidate () =
@@ -517,7 +534,7 @@ type SudokuTests () =
             Cell.createCellList ()
             |> Puzzle.loadValuesIntoCellList seedValues
             // (start of the solve algo:)
-            |> Cell.SetValueStatusOfValueGivenToCellsWithNonDefaultValue
+            |> Cell.setValueStatusOfValueGivenToCellsWithNonDefaultValue
 
         // Act
 

@@ -7,7 +7,7 @@ type ValueStatus =
     | Unconfirmed
     | Confirmed
 
-type Cell = 
+type T = 
     { Id: int
       RowId: int
       ColId: int
@@ -16,12 +16,11 @@ type Cell =
       //BlockColId: int
       Value: int
       ValueStatus: ValueStatus
-      Values: array<int> }
+      Values: int array
+      TriedCandidates: int list}
 
 // constructor:
 let create id =
-    let values = [| for i in 0 .. 9 -> i |]
-
     let getIdTemplate modNum operation id = (operation (id-1) modNum)+1
     let getIdNine = getIdTemplate 9
     let getIdThreeDiv = getIdTemplate 3 (/)
@@ -41,7 +40,8 @@ let create id =
           //BlockColId=blockColId
           Value=ProjectVals.defaultCellValue
           ValueStatus=Unconfirmed
-          Values=values }  // Values[0] is only a placeholder for indexing purposes.
+          Values=[|0..9|]
+          TriedCandidates=[] }  // Values[0] is only a placeholder for indexing purposes.
     cell
 
 let createCellList () = [ for i in 1 .. 81 -> create i ]
@@ -70,13 +70,21 @@ let private rowIdMatch rowId = List.filter (fun x -> x.RowId=rowId)
 let private colIdMatch colId = List.filter (fun x -> x.ColId=colId)
 let getCellViaMatrix (rowId, colId) cellList = (cellList |> rowIdMatch rowId |> colIdMatch colId).FirstOrDefault()
 
-let SetValueStatusOfValueGivenToCellsWithNonDefaultValue cellList =
+let setValueStatusOfValueGivenToCellsWithNonDefaultValue cellList =
     // (used only at the beginning of the solve algorithm & with tests)
     let localFunc x =
         if x.Value<>ProjectVals.defaultCellValue
         then { x with ValueStatus=ValueStatus.Given }
         else x
     cellList |> List.map localFunc
+
+let getCandidates cell =
+    let candidates =
+        cell.Values 
+        |> Array.toList 
+        |> List.distinct 
+        |> List.filter (fun x -> x<>0)
+    candidates
 
 (*  Not currently used (is complete); can be uncommented if use for BlockRow and BlockColumn become apparent.
 let private blockFuncTemplate rowOrCol blockRowId =
