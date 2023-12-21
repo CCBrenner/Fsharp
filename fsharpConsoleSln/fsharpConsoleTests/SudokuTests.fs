@@ -25,7 +25,7 @@ type SudokuTests () =
     member this.TestCorrectRowIdIsAssignedToCells () =
         // Arrange
         // Act
-        let cellList = Cell.createCellList ()
+        let cellList = createCellList ()
 
         // Assert
         Assert.AreEqual(1, cellList[0].RowId)
@@ -501,7 +501,7 @@ type SudokuTests () =
     member this.TestCreateCellManagerFromCellListAndOlderPastCellManager () =
         // Arrange
         let cellList0 = Cell.createCellList ()
-        let cM0 = cellList0 |> CellManager.createFromCellList
+        let cM0 = cellList0 |> CellManager.create
         let cM0' = cM0 |> CellManager.goToNextCell |> CellManager.goToNextCell
 
         // Act

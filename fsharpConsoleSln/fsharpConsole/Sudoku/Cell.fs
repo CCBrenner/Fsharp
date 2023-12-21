@@ -56,6 +56,8 @@ let resetValues cell =
     let resetArr = [| for i in 0 .. 9 -> i |]
     { cell with Values=resetArr }
 
+let resetTriedCandidates cell = { cell with TriedCandidates=[] }
+
 let EliminateCandidatesForGivenAndConfirmedCells =
     ()
     

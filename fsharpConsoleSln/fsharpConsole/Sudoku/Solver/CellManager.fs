@@ -19,6 +19,21 @@ let create = createWithCurrentCell startingCell
 let getCell id cellList = (cellList |> List.filter (fun x-> x.Id = id))[0]  // apply Some/None once learned
 
 let getCurrentCell cM = getCell cM.Current cM.CellList
+
+let updateCellInCellList cell cellList = cellList |> List.map (fun x -> if x.Id = cell.Id then cell else x )
+
+let updateCurrentCell cM cell = { cM with CellList=(cM.CellList |> updateCellInCellList cell) }
+
+let goToNextCell cM = { cM with Current=(cM.Current+1)}
+
+let goToPreviousCell cM = 
+    let result = cM |> getCurrentCell |> resetTriedCandidates
+    { cM with Current=(cM.Current-1) }
+    // decrement Current
+
+let removeCandidates cM =
+    let cellList = cM.CellList |> Candidates.removeCandidates
+    { cM with CellList=(Candidates.removeCandidates cellList)}
 (*
 type T = 
     {   Previous: Cell list

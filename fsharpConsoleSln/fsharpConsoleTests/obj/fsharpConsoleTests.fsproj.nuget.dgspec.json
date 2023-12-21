@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\colly_cp7sy9h\\Desktop\\projects\\gh_clone_hosting\\Fsharp\\Fsharp\\fsharpConsoleSln\\fsharpConsoleTests\\fsharpConsoleTests.fsproj": {}
+    "c:\\Users\\colly_cp7sy9h\\Desktop\\projects\\gh_clone_hosting\\Fsharp\\Fsharp\\fsharpConsoleSln\\fsharpConsoleTests\\fsharpConsoleTests.fsproj": {}
   },
   "projects": {
-    "C:\\Users\\colly_cp7sy9h\\Desktop\\projects\\gh_clone_hosting\\Fsharp\\Fsharp\\fsharpConsoleSln\\fsharpConsoleTests\\fsharpConsoleTests.fsproj": {
+    "c:\\Users\\colly_cp7sy9h\\Desktop\\projects\\gh_clone_hosting\\Fsharp\\Fsharp\\fsharpConsoleSln\\fsharpConsoleTests\\fsharpConsoleTests.fsproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\colly_cp7sy9h\\Desktop\\projects\\gh_clone_hosting\\Fsharp\\Fsharp\\fsharpConsoleSln\\fsharpConsoleTests\\fsharpConsoleTests.fsproj",
+        "projectUniqueName": "c:\\Users\\colly_cp7sy9h\\Desktop\\projects\\gh_clone_hosting\\Fsharp\\Fsharp\\fsharpConsoleSln\\fsharpConsoleTests\\fsharpConsoleTests.fsproj",
         "projectName": "fsharpConsoleTests",
-        "projectPath": "C:\\Users\\colly_cp7sy9h\\Desktop\\projects\\gh_clone_hosting\\Fsharp\\Fsharp\\fsharpConsoleSln\\fsharpConsoleTests\\fsharpConsoleTests.fsproj",
+        "projectPath": "c:\\Users\\colly_cp7sy9h\\Desktop\\projects\\gh_clone_hosting\\Fsharp\\Fsharp\\fsharpConsoleSln\\fsharpConsoleTests\\fsharpConsoleTests.fsproj",
         "packagesPath": "C:\\Users\\colly_cp7sy9h\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\colly_cp7sy9h\\Desktop\\projects\\gh_clone_hosting\\Fsharp\\Fsharp\\fsharpConsoleSln\\fsharpConsoleTests\\obj\\",
+        "outputPath": "c:\\Users\\colly_cp7sy9h\\Desktop\\projects\\gh_clone_hosting\\Fsharp\\Fsharp\\fsharpConsoleSln\\fsharpConsoleTests\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -34,8 +34,8 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "C:\\Users\\colly_cp7sy9h\\Desktop\\projects\\gh_clone_hosting\\Fsharp\\Fsharp\\fsharpConsoleSln\\fsharpConsole\\fsharpConsole.fsproj": {
-                "projectPath": "C:\\Users\\colly_cp7sy9h\\Desktop\\projects\\gh_clone_hosting\\Fsharp\\Fsharp\\fsharpConsoleSln\\fsharpConsole\\fsharpConsole.fsproj"
+              "c:\\Users\\colly_cp7sy9h\\Desktop\\projects\\gh_clone_hosting\\Fsharp\\Fsharp\\fsharpConsoleSln\\fsharpConsole\\fsharpConsole.fsproj": {
+                "projectPath": "c:\\Users\\colly_cp7sy9h\\Desktop\\projects\\gh_clone_hosting\\Fsharp\\Fsharp\\fsharpConsoleSln\\fsharpConsole\\fsharpConsole.fsproj"
               }
             }
           }
@@ -92,14 +92,14 @@
         }
       }
     },
-    "C:\\Users\\colly_cp7sy9h\\Desktop\\projects\\gh_clone_hosting\\Fsharp\\Fsharp\\fsharpConsoleSln\\fsharpConsole\\fsharpConsole.fsproj": {
+    "c:\\Users\\colly_cp7sy9h\\Desktop\\projects\\gh_clone_hosting\\Fsharp\\Fsharp\\fsharpConsoleSln\\fsharpConsole\\fsharpConsole.fsproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\colly_cp7sy9h\\Desktop\\projects\\gh_clone_hosting\\Fsharp\\Fsharp\\fsharpConsoleSln\\fsharpConsole\\fsharpConsole.fsproj",
+        "projectUniqueName": "c:\\Users\\colly_cp7sy9h\\Desktop\\projects\\gh_clone_hosting\\Fsharp\\Fsharp\\fsharpConsoleSln\\fsharpConsole\\fsharpConsole.fsproj",
         "projectName": "fsharpConsole",
-        "projectPath": "C:\\Users\\colly_cp7sy9h\\Desktop\\projects\\gh_clone_hosting\\Fsharp\\Fsharp\\fsharpConsoleSln\\fsharpConsole\\fsharpConsole.fsproj",
+        "projectPath": "c:\\Users\\colly_cp7sy9h\\Desktop\\projects\\gh_clone_hosting\\Fsharp\\Fsharp\\fsharpConsoleSln\\fsharpConsole\\fsharpConsole.fsproj",
         "packagesPath": "C:\\Users\\colly_cp7sy9h\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\colly_cp7sy9h\\Desktop\\projects\\gh_clone_hosting\\Fsharp\\Fsharp\\fsharpConsoleSln\\fsharpConsole\\obj\\",
+        "outputPath": "c:\\Users\\colly_cp7sy9h\\Desktop\\projects\\gh_clone_hosting\\Fsharp\\Fsharp\\fsharpConsoleSln\\fsharpConsole\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

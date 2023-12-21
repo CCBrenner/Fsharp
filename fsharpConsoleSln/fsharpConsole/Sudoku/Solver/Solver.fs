@@ -23,12 +23,31 @@ let setValueStatusOfValueGivenToCellsWithNonDefaultValue =
 
 let removeCandidates = applyToCellListOfSolveRecord Candidates.removeCandidates
 
+//let continueIf f x =
+
 let solveThree cellList =
-    let sR = SolveRecord.create cellList
-    let sR' = sR |> setValueStatusOfValueGivenToCellsWithNonDefaultValue
-    let sR'' = sR |> removeCandidates
-    let sR''' = sR |> updateCandidates
-    ()
+    let sR = cellList |> SolveRecord.create |> setValueStatusOfValueGivenToCellsWithNonDefaultValue
+
+    let rec whileLoop (x:SolveRecord) =
+        let sR = 
+            x |> getNextCandidate
+            |> checkIsSolvable whileLoop
+        if not sR.IsSolvable then sR else  // returns sR
+        let sR' =
+            sR |> checkNoMoreCandidates whileLoop
+        if not sR'.NoMoreCandidates then whileLoop sR' else  // returns result of "whileLoop sR'"
+        let sR'' =
+            sR' |> setExpectedValue
+            |> checkAnyCellsRemaining
+            |> addTriedCandidateToCurrentCell
+            |> updateCandidates
+            |> CellManager.goToNextCell
+            |> incrementLoopCounter
+        ()
+        //match result with
+        //| 
+        //| _ -> sR
+    whileLoop sR
 
 (*
 let performOnCellManager f solveRec =

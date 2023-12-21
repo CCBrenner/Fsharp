@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "BYUFj12UvdDgAy7wr2G9c8pjQvKK4p8ucNlsUY+hVy59qQH+x+U7Zg9nHQDgvdm6SSe78olVKNJkgOgq9K71FA==",
+  "dgSpecHash": "pPPTExE0Ckx/CJTkbcfQSSRue2V3lXOTmDzwtruBJr9GS95IGiqwJ0zC5R1V2kL1iQ2ikCUO9EtkThcT3NUgHQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\colly_cp7sy9h\\Desktop\\projects\\gh_clone_hosting\\Fsharp\\Fsharp\\fsharpConsoleSln\\fsharpConsole\\fsharpConsole.fsproj",
+  "projectFilePath": "c:\\Users\\colly_cp7sy9h\\Desktop\\projects\\gh_clone_hosting\\Fsharp\\Fsharp\\fsharpConsoleSln\\fsharpConsole\\fsharpConsole.fsproj",
   "expectedPackageFiles": [
     "C:\\Users\\colly_cp7sy9h\\.nuget\\packages\\fsharp.core\\8.0.100\\fsharp.core.8.0.100.nupkg.sha512"
   ],
