@@ -360,24 +360,3 @@ let arg2 = [[23;42;13;14;50]; [6]; [237;84;49;140]]
 let arg3 = [23;42;13;14;50;6;237;84;49;140]
 let resultted = someTestFunction1 arg1 arg2
 let resultted' = someTestFunction1 arg3 arg2
-
-
-// Test 20: How 'if' works with returned values compared to match expressions returned values
-let myFunction booleran =
-    if booleran then 1 else
-    let myGoal = 2
-    myGoal
-    // :goal here was to allow for remaining code to have the same indent amt as the
-    // previous code while maintaining the same functionality as match expression (success)
-
-let mySecondFunction booleran =
-    match booleran with
-    | true  -> 1
-    | false ->
-        let myGoal = 2
-        myGoal 
-
-myFunction true  // 1
-myFunction false  // 2
-mySecondFunction true  // 1
-mySecondFunction false  // 2

@@ -27,13 +27,42 @@ let updateCurrentCell cM cell = { cM with CellList=(cM.CellList |> updateCellInC
 let goToNextCell cM = { cM with Current=(cM.Current+1)}
 
 let goToPreviousCell cM = 
-    let result = cM |> getCurrentCell |> resetTriedCandidates
-    { cM with Current=(cM.Current-1) }
-    // decrement Current
+    let newCM = cM |> getCurrentCell |> resetTriedCandidates |> updateCurrentCell cM
+    { newCM with Current=(cM.Current-1) }
 
 let removeCandidates cM =
     let cellList = cM.CellList |> Candidates.removeCandidates
     { cM with CellList=(Candidates.removeCandidates cellList)}
+
+let goBackToLastCellWithUntriedCandidates cM =
+    let rec inner x =
+
+        // when a cell has no more candidates to try when calling GetNextCandidate:
+        // clear the TriedCandidates stack of CurrentCell until stack count == 0
+        int previousValue = CurrentCell.Value;
+
+        CurrentCell.ResetTriedCandidates();
+        CurrentCell.ResetValue();
+
+        // push cell unto RemainingCells stack && Pop cell from PreviousCells stack && Assign popped cell from stack to CurrentCell property
+        MoveToPreviousCell();
+
+        // since Value becomes free, add that value to all respective cells that would have it as a candidate
+        // and then eliminate all non possible candidates
+        _puzzle.UpdateCandidates();
+
+        // get the next candidate to try
+        int candidate = CurrentCell.GetNextCandidate();
+        let candidate = Candidates.getNext
+
+        match sR.sS with  // sR = SolveRecord
+        // if CurrentCell is the CellId 1 and htere are no other candidates to try, exit
+        | Candidate = 0 && PreviousCells.Length = 0 -> 
+            { sR with sR.SolverState.IsSolvable=false }
+        // if there are no other candidates to try, then backtrack to previous cell
+        | Candidate = 0 -> inner sR
+        | _ -> sR
+    inner cM
 (*
 type T = 
     {   Previous: Cell list

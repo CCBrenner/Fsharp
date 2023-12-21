@@ -23,19 +23,31 @@ let setValueStatusOfValueGivenToCellsWithNonDefaultValue =
 
 let removeCandidates = applyToCellListOfSolveRecord Candidates.removeCandidates
 
-//let continueIf f x =
+let checkIsSolvable (sR:SolveRecord.T) =
+    match (sR.cM.Current = 0 && sR.sS.Candidate = 0) with
+    | true -> { sR with sS.IsSolvable=false }
+    | _    -> sR
+
+let checkNoMoreCandidates (sR:SolveRecord.T) =
+    // *intended to be used after checkIsSolvable:
+    match sR.cM.Current with
+    | 0 ->
+        // goBackToLastCellWithUntriedCandidates
+        { sR with sS.NoMoreCandidates=true }
+    | _ ->
+        sR
+
+let setExpectedValue (sR:SolveRecord.T) = 
+
 
 let solveThree cellList =
     let sR = cellList |> SolveRecord.create |> setValueStatusOfValueGivenToCellsWithNonDefaultValue
 
-    let rec whileLoop (x:SolveRecord) =
-        let sR = 
-            x |> getNextCandidate
-            |> checkIsSolvable whileLoop
-        if not sR.IsSolvable then sR else  // returns sR
-        let sR' =
-            sR |> checkNoMoreCandidates whileLoop
-        if not sR'.NoMoreCandidates then whileLoop sR' else  // returns result of "whileLoop sR'"
+    let rec whileLoop (x:SolveRecord.T) =
+        let sR = x |> getNextCandidate |> checkIsSolvable
+        if not sR.sS.IsSolvable then sR else  // returns sR
+        let sR' = sR |> checkNoMoreCandidates
+        if not sR'.sS.NoMoreCandidates then whileLoop sR' else  // returns result of "whileLoop sR'"
         let sR'' =
             sR' |> setExpectedValue
             |> checkAnyCellsRemaining

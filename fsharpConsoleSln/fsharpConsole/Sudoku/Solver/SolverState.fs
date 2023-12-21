@@ -3,9 +3,11 @@
 type T = 
     {   Candidate: int
         Counter: int
-        IsSolvable: bool  }
+        IsSolvable: bool
+        NoMoreCandidates: bool  }
 
-let create candidate counter isSolvable =
+let create candidate counter isSolvable noMoreCandidates  =
     {   Candidate=candidate
         Counter=counter
-        IsSolvable=isSolvable   }
+        IsSolvable=isSolvable
+        NoMoreCandidates=noMoreCandidates   }

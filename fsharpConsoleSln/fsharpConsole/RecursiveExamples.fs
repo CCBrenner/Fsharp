@@ -102,6 +102,7 @@ let findLCM increment modulus start =
 let result86 = findLCM 4 57 0
 
 // #3
+(*
 let goBackToLastCellWithCandidates () =
     let rec inner x =
 
@@ -111,11 +112,6 @@ let goBackToLastCellWithCandidates () =
 
         CurrentCell.ResetTriedCandidates();
         CurrentCell.ResetValue();
-
-        if (previousValue != CurrentCell.Value)
-        {
-            _puzzle.Ledger.RecordNewTxn(CurrentCell.Id, 0, previousValue, CurrentCell.Value);
-        }
 
         // push cell unto RemainingCells stack && Pop cell from PreviousCells stack && Assign popped cell from stack to CurrentCell property
         MoveToPreviousCell();
@@ -136,4 +132,24 @@ let goBackToLastCellWithCandidates () =
         | candidate = 0 -> inner sR
         | _ -> sR
     inner _
+*)
+// #4 : How 'if' works with returned values compared to match expressions returned values
+let myFunction booleran =
+    if booleran then 1 else
+    let myGoal = 2
+    myGoal
+    // :goal here was to allow for remaining code to have the same indent amt as the
+    // previous code while maintaining the same functionality as match expression (success)
+
+let mySecondFunction booleran =
+    match booleran with
+    | true  -> 1
+    | false ->
+        let myGoal = 2
+        myGoal 
+
+let ifTrueResult = myFunction true  // 1
+let ifFalseResult = myFunction false  // 2
+let matchTrueResult = mySecondFunction true  // 1
+let matchFalseResult = mySecondFunction false  // 2
 
