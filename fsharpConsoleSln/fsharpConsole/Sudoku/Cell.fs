@@ -2,11 +2,6 @@
 
 open System.Linq
 
-type ValueStatus =
-    | Given
-    | Unconfirmed
-    | Confirmed
-
 type T = 
     { Id: int
       RowId: int
@@ -15,9 +10,9 @@ type T =
       //BlockRowId: int
       //BlockColId: int
       Value: int
-      ValueStatus: ValueStatus
+      ValueStatus: ValueStatus.ValueStatus
       Values: int array
-      TriedCandidates: int list}
+      TriedCandidates: int list  }
 
 // constructor:
 let create id =
@@ -39,7 +34,7 @@ let create id =
           //BlockRowId=blockRowId
           //BlockColId=blockColId
           Value=ProjectVals.defaultCellValue
-          ValueStatus=Unconfirmed
+          ValueStatus=ValueStatus.Unconfirmed
           Values=[|0..9|]
           TriedCandidates=[] }  // Values[0] is only a placeholder for indexing purposes.
     cell

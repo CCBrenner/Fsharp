@@ -39,7 +39,7 @@ let create id =
         BlockRowId=blockRowId
         BlockColId=blockColId
         Value=defaultCellValue
-        ValueStatus=ValueStatus.Unconfirmed
+        ValueStatus=Unconfirmed
         Values=values   }
 
 let singleCellInAList = [ create 1 ]
@@ -97,7 +97,7 @@ let myStringList = ["one"; "two"; "three"]
 let capturedResultFour = myStringList |> List.reduce (+)
 
 // List.filter - is functionally the same as System.Linq.Select()
-// Get all even ints in myList:
+// Get all even ints in myList: 
 let capturedResultThree = myList |> List.filter (fun x -> x%2=0)
 
 // or Get all odd ints in myList:
@@ -360,3 +360,10 @@ let arg2 = [[23;42;13;14;50]; [6]; [237;84;49;140]]
 let arg3 = [23;42;13;14;50;6;237;84;49;140]
 let resultted = someTestFunction1 arg1 arg2
 let resultted' = someTestFunction1 arg3 arg2
+
+// Test 20: How to replace a value in an immutable sequence by index:
+let testList = [1..9]
+let replaceElementInList index replacementValue myList =
+    [1..(List.length myList)] |> List.map (fun i -> if i=index then replacementValue else myList[i-1])
+
+let somtinker = replaceElementInList 5 10 testList

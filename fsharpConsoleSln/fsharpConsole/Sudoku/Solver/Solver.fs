@@ -1,6 +1,21 @@
 ﻿module Solver
 
-let getNextCandidate (sR:SolveRecord.T) =
+open Cell
+
+type T = { cM: CellManager.T; sS: SolverState.T }
+
+let create cellList =
+    let cM =
+        CellManager.create cellList
+    let sS =
+        SolverState.create 0 1 true false
+    { cM=cM; sS=sS }
+
+let replaceCellList sR cellList = { sR with cM.CellList=cellList }
+
+let getCurrentCell sR = sR.cM |> CellManager.getCurrentCell
+
+let getNextCandidate sR =
     // working on the current cell
     let tempNew = (CellManager.getCurrentCell sR.cM).Values
                   |> Array.filter (fun x -> x<>ProjectVals.defaultCellValue)
@@ -8,27 +23,26 @@ let getNextCandidate (sR:SolveRecord.T) =
     | [||] -> { sR with sS.Candidate=ProjectVals.defaultCellValue }
     | _    -> { sR with sS.Candidate=tempNew[0] }
 
-let updateCandidatesFromCellList cellList =
-    cellList
-    |> Candidates.rehydrateCandidatesOfUnconfirmedCells
-    |> Candidates.removeCandidates
+let applyToCellListOfSolveRecord f sR =
+    sR.cM.CellList |> f |> replaceCellList sR
 
-let applyToCellListOfSolveRecord f (sR:SolveRecord.T) =
-    sR.cM.CellList |> f |> SolveRecord.replaceCellList sR
-
-let updateCandidates = applyToCellListOfSolveRecord updateCandidatesFromCellList
+let updateCandidates = applyToCellListOfSolveRecord Candidates.updateCandidatesFromCellList
 
 let setValueStatusOfValueGivenToCellsWithNonDefaultValue =
     applyToCellListOfSolveRecord Cell.setValueStatusOfValueGivenToCellsWithNonDefaultValue
 
 let removeCandidates = applyToCellListOfSolveRecord Candidates.removeCandidates
 
-let checkIsSolvable (sR:SolveRecord.T) =
+let goToNextCell sR=
+    let cM = sR.cM |> CellManager.goToNextCell
+    { sR with cM=cM }
+
+let checkIsSolvable sR =
     match (sR.cM.Current = 0 && sR.sS.Candidate = 0) with
     | true -> { sR with sS.IsSolvable=false }
     | _    -> sR
 
-let checkNoMoreCandidates (sR:SolveRecord.T) =
+let checkNoMoreCandidates sR =
     // *intended to be used after checkIsSolvable:
     match sR.cM.Current with
     | 0 ->
@@ -37,28 +51,51 @@ let checkNoMoreCandidates (sR:SolveRecord.T) =
     | _ ->
         sR
 
-let setExpectedValue (sR:SolveRecord.T) = 
+let setExpectedValue sR =
+    let currentCell= sR |> getCurrentCell
+    let cM =
+        { currentCell with Value=sR.sS.Candidate; ValueStatus=ValueStatus.Confirmed }
+        |> CellManager.updateCurrentCell sR.cM
+    { sR with cM=cM }
 
+let addTriedCandidateToCurrentCell sR =
+    let currentCell= sR |> getCurrentCell
+    let triedCandidates = 
+        currentCell.TriedCandidates
+        |> ProjectVals.replaceElementInList sR.sS.Candidate sR.sS.Candidate
+    let cM =
+        { currentCell with TriedCandidates=triedCandidates }
+        |> CellManager.updateCurrentCell sR.cM
+    { sR with cM=cM }
 
-let solveThree cellList =
-    let sR = cellList |> SolveRecord.create |> setValueStatusOfValueGivenToCellsWithNonDefaultValue
+let incrementLoopCounter sR = { sR with sS.Counter=sR.sS.Counter+1 }
 
-    let rec whileLoop (x:SolveRecord.T) =
-        let sR = x |> getNextCandidate |> checkIsSolvable
-        if not sR.sS.IsSolvable then sR else  // returns sR
-        let sR' = sR |> checkNoMoreCandidates
-        if not sR'.sS.NoMoreCandidates then whileLoop sR' else  // returns result of "whileLoop sR'"
-        let sR'' =
-            sR' |> setExpectedValue
-            |> checkAnyCellsRemaining
-            |> addTriedCandidateToCurrentCell
+let solve cellList =
+
+    let sR = cellList |> create |> setValueStatusOfValueGivenToCellsWithNonDefaultValue
+
+    let rec whileLoop sR =
+
+        let sR' = sR |> getNextCandidate |> checkIsSolvable
+
+        if not sR'.sS.IsSolvable then sR else  // returns sR
+
+        let sR'' = sR' |> checkNoMoreCandidates
+
+        if not sR''.sS.NoMoreCandidates then whileLoop sR' else  // returns result of "whileLoop sR'"
+
+        let sR''' = sR'' |> setExpectedValue
+
+        if sR'''.cM.Current = 81 then sR'' else
+
+        let sR'''' =
+            sR''' |> addTriedCandidateToCurrentCell
             |> updateCandidates
-            |> CellManager.goToNextCell
+            |> goToNextCell
             |> incrementLoopCounter
-        ()
-        //match result with
-        //| 
-        //| _ -> sR
+
+        whileLoop sR''''
+
     whileLoop sR
 
 (*

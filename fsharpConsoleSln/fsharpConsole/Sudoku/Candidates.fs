@@ -67,3 +67,8 @@ let rehydrateCandidatesOfUnconfirmedCells cellList =
         match x.ValueStatus with
         | ValueStatus.Unconfirmed -> rehydrateCandidates x
         | _ -> x )
+
+let updateCandidatesFromCellList cellList =
+    cellList
+    |> rehydrateCandidatesOfUnconfirmedCells
+    |> removeCandidates

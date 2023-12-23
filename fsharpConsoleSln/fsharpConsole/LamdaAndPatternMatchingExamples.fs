@@ -25,7 +25,7 @@ let f (x,y,z) = x + y * z
 // type is int * int * int -> int
 
 // test
-f (1,2,3)
+let result0 = f (1,2,3)
 
 
 
@@ -36,5 +36,6 @@ let strCompare x y = System.String.Compare(x,y)
 let strCompareWithB = strCompare "B"
 
 // use it with a higher order function
-["D";"A";"B";"C"]
-|> List.map strCompareWithB
+let result1 =
+   ["D";"A";"B";"C"]
+   |> List.map strCompareWithB

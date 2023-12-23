@@ -104,10 +104,10 @@ type SudokuTests () =
         // Act
         // Assert
         let getCellValStatus id = (cellList |> List.filter (fun x -> x.Id=id)).FirstOrDefault().ValueStatus
-        Assert.AreEqual(Cell.ValueStatus.Unconfirmed, getCellValStatus 1)
-        Assert.AreEqual(Cell.ValueStatus.Unconfirmed, getCellValStatus 6)
-        Assert.AreEqual(Cell.ValueStatus.Unconfirmed, getCellValStatus 57)
-        Assert.AreEqual(Cell.ValueStatus.Unconfirmed, getCellValStatus 78)
+        Assert.AreEqual(ValueStatus.Unconfirmed, getCellValStatus 1)
+        Assert.AreEqual(ValueStatus.Unconfirmed, getCellValStatus 6)
+        Assert.AreEqual(ValueStatus.Unconfirmed, getCellValStatus 57)
+        Assert.AreEqual(ValueStatus.Unconfirmed, getCellValStatus 78)
         ()
 
     [<TestMethod>]
@@ -135,13 +135,13 @@ type SudokuTests () =
         let getCellVal id = (cellList |> List.filter (fun x -> x.Id=id)).FirstOrDefault().Value
         let getCellValStatus id = (cellList |> List.filter (fun x -> x.Id=id)).FirstOrDefault().ValueStatus
         Assert.AreEqual(0, getCellVal 1)
-        Assert.AreEqual(Cell.ValueStatus.Unconfirmed, getCellValStatus 1)
+        Assert.AreEqual(ValueStatus.Unconfirmed, getCellValStatus 1)
         Assert.AreEqual(0, getCellVal 6)
-        Assert.AreEqual(Cell.ValueStatus.Unconfirmed, getCellValStatus 6)
+        Assert.AreEqual(ValueStatus.Unconfirmed, getCellValStatus 6)
         Assert.AreEqual(3, getCellVal 57)
-        Assert.AreEqual(Cell.ValueStatus.Unconfirmed, getCellValStatus 57)
+        Assert.AreEqual(ValueStatus.Unconfirmed, getCellValStatus 57)
         Assert.AreEqual(4, getCellVal 78)
-        Assert.AreEqual(Cell.ValueStatus.Unconfirmed, getCellValStatus 78)
+        Assert.AreEqual(ValueStatus.Unconfirmed, getCellValStatus 78)
 
     [<TestMethod>]
     member this.TestGettingCellsOfARowReturnsTheCorrectCells () =
@@ -238,7 +238,7 @@ type SudokuTests () =
             |> Cell.setValueStatusOfValueGivenToCellsWithNonDefaultValue
 
         // Assert
-        let getCellViaMatrix (rowId, colId) = cellList |> Cell.getCellViaMatrix (rowId+1, colId+1)
+        let getCellViaMatrix (rowId, colId) = cellList |> getCellViaMatrix (rowId+1, colId+1)
 
         Assert.AreEqual(ValueStatus.Given, (getCellViaMatrix (0,2)).ValueStatus);
         Assert.AreEqual(ValueStatus.Given, (getCellViaMatrix (1,2)).ValueStatus);
@@ -273,7 +273,7 @@ type SudokuTests () =
             |> Candidates.eliminateCandidatesByDistinctInRow
 
         // Assert
-        let getCellViaMatrix (rowId, colId) = cellList |> Cell.getCellViaMatrix (rowId+1, colId+1)
+        let getCellViaMatrix (rowId, colId) = cellList |> getCellViaMatrix (rowId+1, colId+1)
 
         // Row 0:
         // 5 is NOT a candidate
@@ -328,7 +328,7 @@ type SudokuTests () =
             |> Candidates.eliminateCandidatesByDistinctInColumn
 
         // Assert
-        let getCellViaMatrix (rowId, colId) = cellList |> Cell.getCellViaMatrix (rowId+1, colId+1)
+        let getCellViaMatrix (rowId, colId) = cellList |> getCellViaMatrix (rowId+1, colId+1)
 
         // Column 0:
         // 2 is NOT a candidate
@@ -383,7 +383,7 @@ type SudokuTests () =
             |> Candidates.eliminateCandidatesByDistinctInBlock
 
         // Assert
-        let getCellViaMatrix (rowId, colId) = cellList |> Cell.getCellViaMatrix (rowId+1, colId+1)
+        let getCellViaMatrix (rowId, colId) = cellList |> getCellViaMatrix (rowId+1, colId+1)
 
         // Block 0:
         // 5 is NOT a candidate
@@ -439,7 +439,7 @@ type SudokuTests () =
             |> Candidates.eliminateCandidatesForGivenAndConfirmedCells
 
         // Assert
-        let getCellViaMatrix (rowId, colId) = cellList |> Cell.getCellViaMatrix (rowId+1, colId+1)
+        let getCellViaMatrix (rowId, colId) = cellList |> getCellViaMatrix (rowId+1, colId+1)
 
         // cell.Value=5:  (given)
         Assert.AreEqual (0, (getCellViaMatrix (0,2)).Values[5])
@@ -482,7 +482,7 @@ type SudokuTests () =
             |> Candidates.eliminateCandidatesByDistinctInBlock
 
         // Assert
-        let getCellViaMatrix (rowId, colId) = cellList |> Cell.getCellViaMatrix (rowId, colId)
+        let getCellViaMatrix (rowId, colId) = cellList |> getCellViaMatrix (rowId, colId)
         let cellCoords = (2,2)
         
         // 2 is NOT a candidate (row)
@@ -498,21 +498,38 @@ type SudokuTests () =
         ()
 
     [<TestMethod>]
-    member this.TestCreateCellManagerFromCellListAndOlderPastCellManager () =
+    member this.TestSolverSolvesPuzzles () =
         // Arrange
-        let cellList0 = Cell.createCellList ()
-        let cM0 = cellList0 |> CellManager.create
-        let cM0' = cM0 |> CellManager.goToNextCell |> CellManager.goToNextCell
+        let seedValues = 
+            [ 6; 0; 7;   1; 8; 0;   3; 0; 0 
+              0; 0; 0;   0; 3; 0;   0; 0; 2 
+              0; 0; 5;   0; 0; 0;   0; 0; 0 
+
+              0; 2; 0;   8; 0; 0;   0; 0; 0 
+              0; 5; 0;   0; 0; 0;   6; 0; 0 
+              8; 0; 6;   0; 0; 7;   0; 0; 4 
+
+              0; 0; 0;   0; 0; 4;   0; 9; 0 
+              0; 8; 0;   0; 0; 0;   0; 0; 0 
+              1; 0; 3;   7; 0; 0;   2; 0; 0 ]
+        let cellList =
+            Cell.createCellList ()
+            |> Puzzle.loadValuesIntoCellList seedValues
 
         // Act
-        let testResult = cM0' |> CellManager.createCellManagerFromCellListAndOlderCellManager cellList0
+        let actualPuzzleWasSolved = cellList |> Solver.solve
 
         // Assert
-        let prev = [cellList0[0]; cellList0[1]]
-        let curr = cellList0[2]
-        Assert.AreEqual(prev, testResult.Previous)        
-        Assert.AreEqual(curr, testResult.Current)        
-        Assert.AreEqual(78, (List.length testResult.Remaining))
+        let getCellViaMatrix (rowId, colId) = cellList |> getCellViaMatrix (rowId, colId)
+        //Assert.IsTrue(actualPuzzleWasSolved);
+        Assert.AreEqual(5, (getCellViaMatrix (8, 8)).Values[0]);
+        Assert.AreEqual(4, (getCellViaMatrix (4, 4)).Values[0]);
+        Assert.AreEqual(6, (getCellViaMatrix (0, 0)).Values[0]);
+        Assert.AreEqual(6, (getCellViaMatrix (8, 1)).Values[0]);
+        Assert.AreEqual(1, (getCellViaMatrix (3, 7)).Values[0]);
+        Assert.AreEqual(4, (getCellViaMatrix (2, 3)).Values[0]);
+        ()
+
     (*
     [<TestMethod>]
     member this.TestGetNextCandidateReturnsNextCandidate () =

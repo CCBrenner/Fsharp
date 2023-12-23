@@ -2,26 +2,26 @@
 
 // create an "adder" by partial application of add
 let add42 = (+) 42    // partial application
-add42 1
-add42 3
+let result0 = add42 1
+let result1 = add42 3
 
 // create a new list by applying the add42 function
 // to each element
-[1;2;3] |> List.map add42
+let result2 = [1;2;3] |> List.map add42
 
 // create a "tester" by partial application of "less than"
 let twoIsLessThan = (<) 2   // partial application
-twoIsLessThan 1
-twoIsLessThan 3
+let result3 = twoIsLessThan 1
+let result4 = twoIsLessThan 3
 
 // create a "printer" by partial application of printfn
 let printer = printfn "printing param=%i"
 
 // loop over each element and call the printer function
-[1;2;3] |> List.iter printer
+let result5 = [1;2;3] |> List.iter printer
 
 // filter each element with the twoIsLessThan function
-[1;2;3] |> List.filter twoIsLessThan
+let result6 = [1;2;3] |> List.filter twoIsLessThan
 
 
 // an example using List.map
@@ -29,37 +29,37 @@ let add1 = (+) 1
 let add1ToEach = List.map add1   // fix the "add1" function
 
 // test
-add1ToEach [1;2;3;4]
+let result7 = add1ToEach [1;2;3;4]
 
 
 let addBaboon = (+) " Baboon"
 let addBaboonToEach :(string list->string list) = List.map addBaboon   // fix the "add1" function
 
 let family = ["Papa";"Mama";"Brotha";"Sista"]
-addBaboonToEach family
+let result8 = addBaboonToEach family
 
 // an example using List.filter
 let filterEvens =
   List.filter (fun i -> i%2 = 0) // fix the filter function
 
 // test
-filterEvens [1;2;3;4]
+let result9 = filterEvens [1;2;3;4]
 
 
 // Using lambda functions:
-List.map    (fun i -> i+1) [0;1;2;3]
-List.filter (fun i -> i>1) [0;1;2;3]
-List.sortBy (fun i -> -i ) [0;1;2;3]
+let result10 = List.map    (fun i -> i+1) [0;1;2;3]
+let result11 = List.filter (fun i -> i>1) [0;1;2;3]
+let result12 = List.sortBy (fun i -> -i ) [0;1;2;3]
 
 // Using partial application functions:
 let eachAdd1 = List.map (fun i -> i+1)
-eachAdd1 [0;1;2;3]
+let result13 = eachAdd1 [0;1;2;3]
 
 let excludeOneOrLess = List.filter (fun i -> i>1)
-excludeOneOrLess [0;1;2;3]
+let result14 = excludeOneOrLess [0;1;2;3]
 
 let sortDesc = List.sortBy (fun i -> -i)
-sortDesc [0;1;2;3]
+let result15 = sortDesc [0;1;2;3]
 
 
 
@@ -76,16 +76,17 @@ let result =
     |> replace "h" "j"
     |> startsWith "j"
 
-["the"; "quick"; "brown"; "fox"]
+let result17 = 
+    ["the"; "quick"; "brown"; "fox"]
     |> List.filter (startsWith "f")
 
 // Same as "let result" above only this time using function composition:
 let compositeOp = replace "h" "j" >> startsWith "j"
-let result1 = compositeOp "hello"
+let result1a = compositeOp "hello"
 
 let add x y = x + y
 //(1+2) add (3+4)        // error
-1+2 |> add <| 3+4        // pseudo infix
+let result16 = 1+2 |> add <| 3+4        // pseudo infix
 
 let F1 x y z = x y z  // left associative
 

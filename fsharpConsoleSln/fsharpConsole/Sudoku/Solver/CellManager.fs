@@ -33,7 +33,7 @@ let goToPreviousCell cM =
 let removeCandidates cM =
     let cellList = cM.CellList |> Candidates.removeCandidates
     { cM with CellList=(Candidates.removeCandidates cellList)}
-
+(*
 let goBackToLastCellWithUntriedCandidates cM =
     let rec inner x =
 
@@ -63,6 +63,7 @@ let goBackToLastCellWithUntriedCandidates cM =
         | Candidate = 0 -> inner sR
         | _ -> sR
     inner cM
+*)
 (*
 type T = 
     {   Previous: Cell list

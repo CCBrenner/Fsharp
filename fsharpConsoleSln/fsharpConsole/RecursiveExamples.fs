@@ -134,7 +134,7 @@ let goBackToLastCellWithCandidates () =
     inner _
 *)
 // #4 : How 'if' works with returned values compared to match expressions returned values
-let myFunction booleran =
+let miFunction booleran =
     if booleran then 1 else
     let myGoal = 2
     myGoal
@@ -148,8 +148,8 @@ let mySecondFunction booleran =
         let myGoal = 2
         myGoal 
 
-let ifTrueResult = myFunction true  // 1
-let ifFalseResult = myFunction false  // 2
+let ifTrueResult = miFunction true  // 1
+let ifFalseResult = miFunction false  // 2
 let matchTrueResult = mySecondFunction true  // 1
 let matchFalseResult = mySecondFunction false  // 2
 

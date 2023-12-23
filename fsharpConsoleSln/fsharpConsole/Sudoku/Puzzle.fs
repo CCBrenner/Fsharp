@@ -21,8 +21,8 @@ let solve =
     let markCellsAsGivenOrUnconfirmed cellList =
         [ for i in cellList do
             match i.Value with
-            | 0 -> { i with ValueStatus=Unconfirmed }
-            | _ -> { i with ValueStatus=Given } ]
+            | 0 -> { i with ValueStatus=ValueStatus.Unconfirmed }
+            | _ -> { i with ValueStatus=ValueStatus.Given } ]
 
     // create solver data structure
     let CurrentCell = 1
