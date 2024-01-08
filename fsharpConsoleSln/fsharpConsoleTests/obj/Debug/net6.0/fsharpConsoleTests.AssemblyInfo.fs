@@ -10,7 +10,7 @@ open System.Reflection
 [<assembly: System.Reflection.AssemblyCompanyAttribute("fsharpConsoleTests")>]
 [<assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")>]
 [<assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")>]
-[<assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")>]
+[<assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+96f99d6ae206cd6b1db0bb347710742babffb4b5")>]
 [<assembly: System.Reflection.AssemblyProductAttribute("fsharpConsoleTests")>]
 [<assembly: System.Reflection.AssemblyTitleAttribute("fsharpConsoleTests")>]
 [<assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")>]
